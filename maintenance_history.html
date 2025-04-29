@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Історія обслуговування техніки - AgroFleet">
+    <title>Історія обслуговування - AgroFleet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../components/navigation.css">
+    <link rel="stylesheet" href="/public/maintenance_history.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
+    <style>
+        .flatpickr-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navigation-container" aria-label="Навігація"></div>
+
+    <main>
+        <section class="maintenance-report" aria-label="Фільтри та історія">
+            <div class="inner-content">
+                <h1 id="maintenance-title"><i class="fas fa-tools"></i> Історія обслуговування</h1>
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="dateFilter">Дата:</label>
+                        <input type="text" id="dateFilter" placeholder="Оберіть дату">
+                    </div>
+                    <div class="filter-group">
+                        <label for="typeFilter">Тип:</label>
+                        <select id="typeFilter">
+                            <option value="">Усі</option>
+                            <option value="Регулярне обслуговування">Регулярне обслуговування</option>
+                            <option value="Заміна масла">Заміна масла</option>
+                            <option value="Ремонт двигуна">Ремонт двигуна</option>
+                            <option value="Заміна фільтрів">Заміна фільтрів</option>
+                            <option value="Діагностика">Діагностика</option>
+                            <option value="Інше">Інше</option>
+                        </select>
+                    </div>
+                    <button id="addHistoryBtn" class="add-btn"><i class="fas fa-plus"></i> Додати запис</button>
+                </div>
+
+                <div class="history-grid" id="history-grid" aria-label="Сітка історії обслуговування"></div>
+            </div>
+
+            <div id="historyModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button">×</span>
+                    <h2 id="modalTitle"><i class="fas fa-tools"></i> Додати запис</h2>
+                    <form id="historyForm" class="maintenance-form">
+                        <div class="form-group">
+                            <label for="date"><i class="fas fa-calendar-alt"></i> Дата:</label>
+                            <input type="text" id="date" required aria-required="true" placeholder="Оберіть дату">
+                        </div>
+                        <div class="form-group">
+                            <label for="type"><i class="fas fa-wrench"></i> Тип обслуговування:</label>
+                            <select id="type" required aria-required="true">
+                                <option value="" disabled selected>Оберіть тип</option>
+                                <option value="Регулярне обслуговування">Регулярне обслуговування</option>
+                                <option value="Заміна масла">Заміна масла</option>
+                                <option value="Ремонт двигуна">Ремонт двигуна</option>
+                                <option value="Заміна фільтрів">Заміна фільтрів</option>
+                                <option value="Діагностика">Діагностика</option>
+                                <option value="Інше">Інше</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description"><i class="fas fa-comment"></i> Опис:</label>
+                            <textarea id="description" placeholder="Опишіть роботу" required aria-required="true"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="responsible"><i class="fas fa-user"></i> Відповідальна особа:</label>
+                            <input type="text" id="responsible" placeholder="ПІБ відповідального" required aria-required="true">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit"><i class="fas fa-save"></i> Зберегти</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { initNavigation } from '../components/navigation.js';
+
+        async function initializePage() {
+            try {
+                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html';
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+                initNavigation();
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                window.location.href = '/profile.html';
+            }
+        }
+
+        initializePage();
+
+        flatpickr("#dateFilter", {
+            locale: "uk",
+            dateFormat: "Y-m-d"
+        });
+
+        flatpickr("#date", {
+            locale: "uk",
+            dateFormat: "Y-m-d",
+            defaultDate: new Date()
+        });
+    </script>
+    <script src="/public/maintenance_history.js" type="module"></script>
+    <script src="/public/profile.js" type="module"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93655abaf97a8bbc',t:'MTc0NTY2Mjg5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

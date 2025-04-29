@@ -1,0 +1,590 @@
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #e3f2e1, #f5f7f9);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Плавний перехід для текстових елементів (кроме заголовків) */
+p, .expand-text {
+    transition: box-shadow 0.5s ease-in-out;
+}
+
+/* Перехід для тексту всередині */
+p span, .expand-text span {
+    display: inline-block;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Основний контент */
+main {
+    position: relative;
+    padding: 20px;
+    text-align: justify;
+    border-radius: 15px;
+    margin: 20px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    flex: 1;
+    transition: box-shadow 0.5s ease-in-out;
+}
+
+/* Стили для контейнеров контента */
+.content-block {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.content-block.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Стили для изображений */
+.content-image {
+    width: 100%;
+    border-radius: 30px;
+    box-shadow: 0 9px 18px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    height: auto;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.content-image.loaded {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Анимация для элементов с классом fade-in */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.fade-in.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Стили для футера с анимацией появления */
+.footer {
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    color: #ecf0f1;
+    padding: 30px 20px 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.footer.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    gap: 15px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+    text-align: left;
+    opacity: 0;
+    transform: translateX(-100px) rotateY(45deg);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.footer-section.loaded {
+    opacity: 1;
+    transform: translateX(0) rotateY(0);
+}
+
+/* Зменшуємо відступ зліва для "Про нас", щоб зсунути інші блоки правіше */
+.footer-section.about {
+    flex: 2;
+    min-width: 350px;
+    margin-left: 0;
+}
+
+/* Зсуваємо "Контакти" правіше */
+.footer-section.contact {
+    flex: 1;
+    min-width: 200px;
+    margin-left: 50px;
+}
+
+.footer-section.social {
+    flex: 1;
+    min-width: 200px;
+    margin-left: 40px;
+}
+
+.footer-section.partners {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Збільшуємо шрифти для заголовків у всіх секціях, крім "Про нас" */
+.footer-section.contact .footer-title,
+.footer-section.social .footer-title,
+.footer-section.partners .footer-title {
+    font-size: 1.5em;
+    color: #2ecc71;
+    margin-bottom: 15px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+/* Заголовок для "Про нас" залишаємо без змін */
+.footer-section.about .footer-title {
+    font-size: 1.3em;
+    color: #2ecc71;
+    margin-bottom: 15px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 2px;
+    background: #2ecc71;
+    bottom: -5px;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+.footer-title:hover {
+    color: #27ae60;
+}
+
+.footer-title:hover::after {
+    width: 60px;
+}
+
+/* Сделаем весь текст в футере белым */
+.footer-section p,
+.footer-section a,
+.footer-section ul li a,
+.footer-bottom p {
+    color: #ffffff !important;
+}
+
+/* Изменим цвет иконки трактора на зеленый */
+.decor-tractor {
+    color: #2ecc71;
+}
+
+/* Збільшуємо шрифти для тексту в "Контакти", "Слідкуйте за нами" і "Наші партнери" */
+.footer-section.contact p,
+.footer-section.social p,
+.footer-section.partners p,
+.footer-section.partners a {
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 5px 0;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* Текст у "Про нас" залишаємо без змін */
+.footer-section.about p {
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 5px 0;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.footer-section p i {
+    margin-right: 8px;
+    color: #2ecc71;
+}
+
+.footer-section a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: #2ecc71;
+    text-decoration: underline;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.footer-section ul li {
+    margin: 5px 0;
+    transition: transform 0.3s ease;
+}
+
+.footer-section ul li:hover {
+    transform: translateX(10px);
+}
+
+/* Стилі для посилань партнерів */
+.partner-links {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.partner-links a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.partner-links a:hover {
+    color: #2ecc71;
+    text-decoration: underline;
+}
+
+/* Социальные иконки */
+.social-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    background: #2ecc71;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: scale(0) rotateY(180deg);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.social-icon.loaded {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+}
+
+.social-icon:hover {
+    background: #27ae60;
+    transform: rotate(360deg) scale(1.2);
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+}
+
+/* Обновление стилей для .footer-bottom */
+.footer-bottom {
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+    border-radius: 0;
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.footer-bottom.loaded {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 12px;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    color: #ffffff;
+}
+
+/* Кнопка "Наверх" */
+.scroll-top {
+    position: absolute;
+    right: 15px;
+    bottom: 0px;
+    background: #2ecc71;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px) rotate(45deg);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.scroll-top.loaded {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+}
+
+.scroll-top:hover {
+    background: #27ae60;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+.scroll-top i {
+    font-size: 14px;
+}
+
+/* Декоративные элементы */
+.footer-decor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.decor-tractor, .decor-wheat {
+    position: absolute;
+    color: rgba(46, 204, 113, 0.2);
+    font-size: 80px;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.decor-tractor.loaded, .decor-wheat.loaded {
+    opacity: 0.3;
+    animation: floatAndFade 5s infinite ease-in-out;
+}
+
+.decor-tractor {
+    top: 10px;
+    left: 30px;
+}
+
+.decor-wheat {
+    bottom: 10px;
+    right: 30px;
+}
+
+/* Анимация для декоративных элементов */
+@keyframes floatAndFade {
+    0% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-15px); opacity: 0.5; }
+    100% { transform: translateY(0); opacity: 0.3; }
+}
+
+/* Эффект параллакса при скролле */
+.footer {
+    background-attachment: fixed;
+    background-position: center;
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+    .content-block {
+        flex-direction: column;
+    }
+
+    .content-block img {
+        margin: 0 0 20px 0;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin: 10px 0;
+    }
+
+    .footer-section.about,
+    .footer-section.contact,
+    .footer-section.social,
+    .footer-section.partners {
+        min-width: 100%;
+        text-align: center;
+        margin-left: 0;
+    }
+
+    .footer-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+
+    .partner-links {
+        align-items: center;
+    }
+
+    .scroll-top {
+        right: 15px;
+        bottom: 0px;
+    }
+
+    .decor-tractor, .decor-wheat {
+        font-size: 50px;
+    }
+
+    .decor-tractor {
+        left: 10px;
+    }
+
+    .decor-wheat {
+        right: 10px;
+    }
+}
+
+/* Дополнительные стили для контента */
+h1, h2, h3 {
+    text-align: center;
+    color: #4CAF50;
+    transition: color 0.5s ease-in-out;
+}
+
+.section-title {
+    font-size: 2em;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1em;
+    transition: all 0.5s ease-in-out;
+}
+
+.section-title:hover {
+    color: #2ecc71;
+    text-shadow: 1px 1px 5px rgba(0, 128, 0, 0.3);
+}
+
+.service-title {
+    font-size: 1.5em;
+    color: #4CAF50;
+    margin-bottom: 0.5em;
+    transition: all 0.5s ease-in-out;
+}
+
+.service-title:hover {
+    color: #2ecc71;
+    text-shadow: 1px 1px 5px rgba(0, 128, 0, 0.3);
+}
+
+p, ul, li, .expand-text {
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    transition: all 0.5s ease-in-out;
+}
+
+p, ul {
+    text-align: justify;
+    border-radius: 15px;
+    padding: 35px;
+    margin: 20px 0;
+    background-color: #e4e3e3;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+p:hover, ul:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+li {
+    margin-left: 30px;
+    transition: all 0.5s ease-in-out;
+}
+
+li:hover {
+    color: #2ecc71;
+    margin-left: 35px;
+}
+
+/* Эффект при наведении: увеличение текста и тени блока для p и .expand-text */
+p:hover, .expand-text:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+p:hover span, .expand-text:hover span {
+    transform: scale(1.05);
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Анимации */
+@keyframes footerFadeIn {
+    0% { opacity: 0; transform: translateY(100px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn3D {
+    0% { opacity: 0; transform: translateX(-100px) rotateY(45deg); }
+    100% { opacity: 1; transform: translateX(0) rotateY(0); }
+}
+
+@keyframes flipAndScale {
+    0% { opacity: 0; transform: scale(0) rotateY(180deg); }
+    50% { opacity: 0.5; transform: scale(1.2) rotateY(90deg); }
+    100% { opacity: 1; transform: scale(1) rotateY(0); }
+}
+
+@keyframes scaleUp {
+    0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes swingIn {
+    0% { opacity: 0; transform: translateY(50px) rotate(45deg); }
+    50% { transform: translateY(-10px) rotate(-10deg); }
+    100% { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+@keyframes floatAndFade {
+    0% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-15px); opacity: 0.5; }
+    100% { transform: translateY(0); opacity: 0.3; }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}

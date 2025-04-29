@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/public/contract_management.css">
+    <link rel="stylesheet" href="/components/navigation.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="/public/fonts.js" type="module"></script>
+    <script src="/public/contract_management.js" type="module"></script>
+    <title>Управління договорами</title>
+    <style>
+        .flatpickr-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navigation-container"></div>
+
+    <main>
+        <section class="contracts-management">
+            <div class="inner-content">
+                <h1><i class="fas fa-file-contract"></i> Управління договорами</h1>
+                <div class="report-actions">
+                    <div class="filter-group">
+                        <label for="contractDateFilter" class="noto-sans-regular" title="Двічі клацніть, щоб скинути">Дата:</label>
+                        <input type="text" id="contractDateFilter" class="noto-sans-regular" placeholder="Оберіть дату">
+                    </div>
+                    <div class="filter-group">
+                        <label for="contractStatusFilter" class="noto-sans-regular" title="Двічі клацніть, щоб скинути">Статус:</label>
+                        <select id="contractStatusFilter" class="noto-sans-regular">
+                            <option value="">Усі статуси</option>
+                            <option value="active">Активний</option>
+                            <option value="completed">Виконано</option>
+                            <option value="terminated">Розірвано</option>
+                        </select>
+                    </div>
+                    <button id="addContractBtn" class="noto-sans-regular"><i class="fas fa-plus"></i> Додати договір</button>
+                </div>
+                <div class="contracts-grid" id="contractsGrid"></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="contractModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">×</span>
+            <h2 id="modalTitle">Додати договір</h2>
+            <form id="contractForm">
+                <label for="contractNumber">Номер договору:</label>
+                <input type="text" id="contractNumber" name="contractNumber" required>
+
+                <label for="contractName">Назва договору:</label>
+                <input type="text" id="contractName" name="contractName" required>
+
+                <label for="contractParty">Сторона договору:</label>
+                <input type="text" id="contractParty" name="contractParty" required>
+
+                <label for="contractDate">Дата початку:</label>
+                <input type="text" id="contractDate" name="contractDate" required placeholder="Оберіть дату">
+
+                <label for="contractEndDate">Дата закінчення:</label>
+                <input type="text" id="contractEndDate" name="contractEndDate" required placeholder="Оберіть дату">
+
+                <label for="contractAmount">Сума (UAH):</label>
+                <input type="number" id="contractAmount" name="contractAmount" step="0.01" required>
+
+                <label for="contractStatus">Статус:</label>
+                <select id="contractStatus" name="contractStatus" required>
+                    <option value="active">Активний</option>
+                    <option value="completed">Виконано</option>
+                    <option value="terminated">Розірвано</option>
+                </select>
+
+                <label for="equipmentType">Тип техніки:</label>
+                <input type="text" id="equipmentType" name="equipmentType" required>
+
+                <label for="region">Регіон:</label>
+                <input type="text" id="region" name="region" required>
+
+                <label for="paymentTerms">Умови оплати:</label>
+                <input type="text" id="paymentTerms" name="paymentTerms">
+
+                <label for="deliveryTerms">Умови доставки:</label>
+                <input type="text" id="deliveryTerms" name="deliveryTerms">
+
+                <label for="contractDuration">Тривалість договору:</label>
+                <input type="text" id="contractDuration" name="contractDuration">
+
+                <label for="responsiblePerson">Відповідальна особа:</label>
+                <input type="text" id="responsiblePerson" name="responsiblePerson">
+
+                <label for="contractNotes">Примітки:</label>
+                <textarea id="contractNotes" name="contractNotes"></textarea>
+
+                <button type="submit">Зберегти</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initNavigation } from '/components/navigation.js';
+
+        async function initializePage() {
+            try {
+                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html';
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+
+                initNavigation();
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                window.location.href = '/profile.html';
+            }
+        }
+
+        initializePage();
+
+        flatpickr("#contractDateFilter", {
+            locale: "uk",
+            dateFormat: "Y-m-d"
+        });
+
+        flatpickr("#contractDate", {
+            locale: "uk",
+            dateFormat: "Y-m-d",
+            defaultDate: new Date()
+        });
+
+        flatpickr("#contractEndDate", {
+            locale: "uk",
+            dateFormat: "Y-m-d"
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'936553caca2f675b',t:'MTc0NTY2MjYxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

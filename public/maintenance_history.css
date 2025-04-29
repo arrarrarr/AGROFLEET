@@ -1,0 +1,744 @@
+/* Загальні стилі */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans', Arial, sans-serif;
+    background: linear-gradient(135deg, #e3f2e1, #f5f7f9);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.maintenance-report {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 100, 0, 0.2);
+    width: 98%;
+    max-width: 1600px;
+    animation: fadeIn 0.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.inner-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.maintenance-report h1 {
+    color: #1a3c34;
+    font-size: 2rem;
+    margin-bottom: 5px;
+    margin-top: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.maintenance-report h1 i {
+    color: #4a8b5c;
+}
+
+/* Стилі для фільтрів */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 30px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 180px;
+}
+
+.filter-group label {
+    color: #34495e;
+    font-weight: 500;
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.filter-group label:hover {
+    color: #4a8b5c;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 8px;
+    border: 1px solid #22c55e;
+    border-radius: 10px;
+    background: #f9f9f9;
+    transition: all 0.4s ease;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 180px;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: #4a8b5c;
+    box-shadow: 0 0 5px rgba(74, 139, 92, 0.3);
+    outline: none;
+    background: #fff;
+}
+
+.filter-group select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2334495e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 30px;
+}
+
+.add-btn {
+    padding: 8px 16px;
+    background: linear-gradient(90deg, #4a8b5c, #3a6b4c);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(74, 139, 92, 0.3);
+    transform: translateY(-5px);
+}
+
+.add-btn:hover {
+    transform: translateY(-7px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(74, 139, 92, 0.5);
+    background: linear-gradient(90deg, #3a6b4c, #4a8b5c);
+}
+
+/* Стилі для сітки карточок */
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 1200px;
+    transition: all 0.5s ease;
+}
+
+.history-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);
+    border-left: 4px solid #4a8b5c;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.history-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 128, 0, 0.2);
+}
+
+.history-card h3 {
+    margin: 0 0 8px;
+    color: #34495e;
+    font-size: 1.1rem;
+}
+
+.history-card p {
+    margin: 4px 0;
+    color: #7f8c8d;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 0.85rem;
+    white-space: normal;
+}
+
+.history-card p i {
+    color: #4a8b5c;
+}
+
+.action-buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-buttons button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.4s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-btn {
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+}
+
+.edit-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 12px rgba(243, 156, 18, 0.4);
+    background: linear-gradient(90deg, #e67e22, #f39c12);
+}
+
+.delete-btn {
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.delete-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 12px rgba(231, 76, 60, 0.4);
+    background: linear-gradient(90deg, #c0392b, #e74c3c);
+}
+
+/* Стилі для модального вікна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #ffffff, #f0f4f8);
+    padding: 25px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    position: relative;
+    box-shadow: 0 15px 50px rgba(0, 100, 0, 0.3);
+    animation: scaleUp 0.5s ease;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4a8b5c #f0f4f8;
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f0f4f8;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #4a8b5c;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #3a6b4c;
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    color: #ff4d4d;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.close-button:hover {
+    color: #e74c3c;
+    transform: rotate(90deg);
+}
+
+.modal-content h2 {
+    color: #1a3c34;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Стилі для форми в модальному вікні */
+.maintenance-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #34495e;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.05rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #22c55e;
+    border-radius: 10px;
+    background: #f9f9f9;
+    transition: all 0.4s ease;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.form-group textarea {
+    min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #4a8b5c;
+    box-shadow: 0 0 5px rgba(74, 139, 92, 0.3);
+    outline: none;
+    background: #fff;
+}
+
+.form-group select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2334495e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 40px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #4a8b5c, #3a6b4c);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(74, 139, 92, 0.3);
+    margin: 20px auto 0;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(74, 139, 92, 0.5);
+    background: linear-gradient(90deg, #3a6b4c, #4a8b5c);
+}
+
+/* Стилі для toast-уведомлений */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    max-width: 300px;
+}
+
+.toast.error {
+    background-color: #f44336;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Адаптивність */
+@media (max-width: 1200px) {
+    .maintenance-report {
+        padding: 80px;
+        width: 98%;
+        max-width: 1100px;
+    }
+
+    .inner-content {
+        max-width: 900px;
+    }
+
+    .history-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        max-width: 900px;
+        gap: 18px;
+    }
+
+    .history-card {
+        padding: 12px;
+    }
+
+    .history-card h3 {
+        font-size: 1rem;
+    }
+
+    .history-card p {
+        font-size: 0.85rem;
+        gap: 5px;
+    }
+
+    .action-buttons {
+        margin-top: 8px;
+        gap: 5px;
+    }
+
+    .action-buttons button {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .maintenance-report {
+        padding: 60px;
+        width: 98%;
+        max-width: 900px;
+    }
+
+    .inner-content {
+        max-width: 700px;
+    }
+
+    .history-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        max-width: 700px;
+        gap: 15px;
+    }
+
+    .history-card {
+        padding: 10px;
+    }
+
+    .history-card h3 {
+        font-size: 0.95rem;
+    }
+
+    .history-card p {
+        font-size: 0.8rem;
+    }
+
+    .action-buttons button {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .maintenance-report {
+        padding: 30px;
+        margin: 5px;
+        width: 98%;
+        max-width: 700px;
+    }
+
+    .inner-content {
+        max-width: 100%;
+        padding-top: 5px;
+    }
+
+    .maintenance-report h1 {
+        font-size: 1.5rem;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .filter-group {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        max-width: 100%;
+    }
+
+    .add-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        transform: translateY(0);
+    }
+
+    .add-btn:hover {
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .history-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+        gap: 12px;
+        max-width: 100%;
+    }
+
+    .history-card {
+        padding: 10px;
+    }
+
+    .history-card h3 {
+        font-size: 0.9rem;
+    }
+
+    .history-card p {
+        font-size: 0.75rem;
+        gap: 4px;
+    }
+
+    .action-buttons {
+        margin-top: 6px;
+        gap: 4px;
+    }
+
+    .action-buttons button {
+        padding: 4px 8px;
+        font-size: 0.65rem;
+    }
+
+    .modal {
+        padding: 10px;
+    }
+
+    .modal-content {
+        padding: 20px;
+        max-width: 90%;
+        max-height: 90vh;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .modal-content button[type="submit"] {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .maintenance-report {
+        padding: 15px;
+        width: 98%;
+        max-width: 400px;
+    }
+
+    .inner-content {
+        max-width: 100%;
+        padding-top: 3px;
+    }
+
+    .maintenance-report h1 {
+        font-size: 1.2rem;
+    }
+
+    .add-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .history-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .history-card {
+        padding: 8px;
+    }
+
+    .history-card h3 {
+        font-size: 0.85rem;
+    }
+
+    .history-card p {
+        font-size: 0.7rem;
+        gap: 3px;
+    }
+
+    .action-buttons {
+        margin-top: 5px;
+        gap: 3px;
+    }
+
+    .action-buttons button {
+        padding: 3px 6px;
+        font-size: 0.6rem;
+    }
+
+    .modal-content {
+        padding: 15px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.2rem;
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .modal-content button[type="submit"] {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .maintenance-report {
+        padding: 10px;
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .maintenance-report h1 {
+        font-size: 1rem;
+    }
+
+    .filter-group label {
+        font-size: 0.85rem;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+
+    .add-btn {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+
+    .modal-content {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .form-group label {
+        font-size: 0.85rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+
+    button[type="submit"] {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+
+    .history-card {
+        padding: 6px;
+    }
+
+    .history-card h3 {
+        font-size: 0.8rem;
+    }
+
+    .history-card p {
+        font-size: 0.65rem;
+    }
+
+    .action-buttons button {
+        padding: 4px 8px;
+        font-size: 0.65rem;
+    }
+}

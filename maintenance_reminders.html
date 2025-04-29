@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/components/navigation.css">
+    <link rel="stylesheet" href="/public/maintenance_reminders.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
+    <title>Нагадування для Агрофірми</title>
+    <style>
+        .flatpickr-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navigation-container"></div>
+
+    <main>
+        <section class="reminders-section">
+            <div class="inner-content">
+                <h1><i class="fas fa-bell"></i> Нагадування для Агрофірми</h1>
+                <div class="reminder-actions">
+                    <div class="filter-group">
+                        <label for="dateFilter" class="noto-sans-regular" title="Двічі клацніть, щоб скинути">Дата:</label>
+                        <input type="text" id="dateFilter" class="noto-sans-regular" placeholder="Оберіть дату">
+                    </div>
+                    <div class="filter-group">
+                        <label for="statusFilter" class="noto-sans-regular" title="Двічі клацніть, щоб скинути">Статус:</label>
+                        <select id="statusFilter" class="noto-sans-regular">
+                            <option value="">Усі</option>
+                            <option value="planned">Заплановано</option>
+                            <option value="in_progress">В процесі</option>
+                            <option value="completed">Завершено</option>
+                        </select>
+                    </div>
+                    <button id="addReminderBtn" class="noto-sans-regular"><i class="fas fa-plus"></i> Додати нагадування</button>
+                </div>
+                <div class="reminders-grid" id="remindersGrid"></div>
+            </div>
+        </section>
+
+        <div id="reminderModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">×</span>
+                <h2 id="modalTitle"><i class="fas fa-bell"></i> Додати нагадування</h2>
+                <form id="reminderForm">
+                    <label for="reminderText">Текст нагадування:</label>
+                    <input type="text" id="reminderText" required>
+
+                    <label for="taskDateTime">Дата та час:</label>
+                    <input type="text" id="taskDateTime" required placeholder="Оберіть дату та час">
+
+                    <label for="equipment">Техніка:</label>
+                    <select id="equipment" required>
+                        <option value="">Оберіть техніку</option>
+                        <optgroup label="Трактори">
+                            <option value="Трактор 404D6ZU">Трактор 404D6ZU</option>
+                            <option value="Трактор Xingtai XT-900">Трактор Xingtai XT-900</option>
+                        </optgroup>
+                        <optgroup label="Комбайни">
+                            <option value="Комбайн CAT Lexion 470R">Комбайн CAT Lexion 470R</option>
+                            <option value="Комбайн YTO 4LZ-8B1">Комбайн YTO 4LZ-8B1</option>
+                        </optgroup>
+                        <optgroup label="Дощувальні машини">
+                            <option value="Дощувальна машина ДТЗ 300">Дощувальна машина ДТЗ 300</option>
+                            <option value="Дощувальна машина ПГР-3.35">Дощувальна машина ПГР-3.35</option>
+                            <option value="Дощувальна машина ПГР НН-225">Дощувальна машина ПГР НН-225</option>
+                            <option value="Дощувальна машина ПГР НН 220">Дощувальна машина ПГР НН 220</option>
+                        </optgroup>
+                        <optgroup label="Культиватори">
+                            <option value="Культиватор КМ-140/C">Культиватор КМ-140/C</option>
+                            <option value="Культиватор KTLC-8MRT">Культиватор KTLC-8MRT</option>
+                        </optgroup>
+                    </select>
+
+                    <label for="operator">Оператор:</label>
+                    <select id="operator" required>
+                        <option value="">Оберіть оператора</option>
+                        <option value="Іван Петров">Іван Петров</option>
+                        <option value="Олена Сидоренко">Олена Сидоренко</option>
+                        <option value="Михайло Коваль">Михайло Коваль</option>
+                    </select>
+
+                    <label for="taskType">Тип задачі:</label>
+                    <select id="taskType" required>
+                        <option value="maintenance">Техогляд</option>
+                        <option value="repair">Ремонт</option>
+                    </select>
+
+                    <div id="repairDetails" style="display: none;">
+                        <label for="repairPart">Деталь для ремонту:</label>
+                        <select id="repairPart">
+                            <option value="">Оберіть деталь</option>
+                        </select>
+
+                        <label for="repairDescription">Опис ремонту:</label>
+                        <textarea id="repairDescription" placeholder="Опишіть деталі ремонту"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Зберегти</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+   
+
+    <script type="module">
+        import { initNavigation } from '/components/navigation.js';
+
+        async function initializePage() {
+            try {
+                console.log('Початок ініціалізації сторінки...');
+                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html';
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+                await initNavigation();
+                console.log('Навігація успішно ініціалізована');
+            } catch (error) {
+                console.error('Помилка ініціалізації сторінки:', error.message);
+                window.location.href = '/profile.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded: DOM повністю завантажено');
+            initializePage();
+
+            flatpickr("#dateFilter", {
+                locale: "uk",
+                dateFormat: "Y-m-d"
+            });
+
+            flatpickr("#taskDateTime", {
+                locale: "uk",
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true
+            });
+        });
+    </script>
+    <script src="/public/maintenance_reminders.js" defer></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'936553cacbdaadc9',t:'MTc0NTY2MjYxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

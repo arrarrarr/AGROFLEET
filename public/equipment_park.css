@@ -1,0 +1,920 @@
+/* equipment_park.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #e3f2e1, #f5f7f9);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Стилі для контейнера кошика */
+.cart-container {
+    position: absolute;
+    top: 125px; /* Відступ від верхнього краю */
+    right: 40px; /* Відступ від правого краю */
+    z-index: 1000; /* Щоб кошик був поверх інших елементів */
+}
+
+/* Стилі для кошика */
+.cart-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Відстань між іконкою та лічильником */
+    color: #f1c40f; /* Світло-жовтий колір для контрасту */
+    font-size: 30px; /* Розмір іконки */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.cart-icon:hover {
+    color: #e4b60d; /* Темніший відтінок при наведенні */
+}
+
+.cart-icon #cartCount {
+    background: #e74c3c; /* Червоний фон лічильника */
+    color: white;
+    border-radius: 50%;
+    padding: 1px 7px; /* Розмір лічильника */
+    font-size: 14px; /* Розмір тексту лічильника */
+    position: absolute;
+    top: -10px;
+    right: -15px;
+}
+
+/* Коментарі до кошика */
+.cart-icon::before {
+    content: "Кошик для оренди техніки"; /* Текст коментаря */
+    position: absolute;
+    top: 40px; /* Розташовуємо нижче кошика */
+    right: 0; /* Вирівнюємо по правому краю кошика */
+    color: #ffffff; /* Білий колір тексту для контрасту */
+    font-size: 12px; /* Менший розмір шрифту */
+    background: rgba(0, 0, 0, 0.6); /* Напівпрозорий чорний фон */
+    padding: 2px 6px;
+    border-radius: 5px;
+    white-space: nowrap; /* Запобігаємо переносу тексту */
+    opacity: 0; /* Приховуємо за замовчуванням */
+    transition: opacity 0.5s ease; /* Плавная анимация появления */
+}
+
+.cart-icon:hover::before {
+    opacity: 1; /* Показуємо при наведенні */
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    flex: 1;
+    position: relative; /* Додаємо relative, щоб cart-container позиціонувався відносно content-wrapper */
+}
+
+.filter-container {
+    width: 200px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 128, 0, 0.2);
+    height: fit-content;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.filter-container h2 {
+    color: #34495e;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.filter-group label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #7f8c8d;
+    cursor: pointer;
+}
+
+.filter-group input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #2ecc71;
+}
+
+.search-container {
+    margin-bottom: 15px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #22c55e;
+    border-radius: 10px;
+    background: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.search-container input:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+    outline: none;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 128, 0, 0.1);
+    width: 230px;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s ease; /* Увеличиваем длительность для плавности */
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 128, 0, 0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 60%;
+    object-fit: cover;
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    color: #34495e;
+    text-align: center;
+    padding: 10px 5px;
+    margin: 0;
+}
+
+/* Новый элемент для цены */
+.price {
+    position: absolute;
+    bottom: 0; /* Прижимаем к низу карточки */
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    text-align: center; /* Центрируем текст */
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    z-index: 1; /* Базовый z-index */
+}
+
+/* Стили для .details (для анимации) */
+.details {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95); /* Чуть более непрозрачный фон */
+    padding: 10px;
+    text-align: center;
+    transform: translateY(100%); /* Скрыт по умолчанию */
+    transition: transform 0.5s ease-in-out; /* Плавная анимация с увеличенной длительностью */
+    z-index: 2; /* Более высокий z-index, чтобы перекрывать .price */
+}
+
+.card:hover .details {
+    transform: translateY(0); /* Появляется при наведении */
+}
+
+.card-actions {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    gap: 5px;
+}
+
+.card-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #34495e;
+    transition: color 0.3s ease;
+}
+
+.card-actions button:hover {
+    color: #2ecc71;
+}
+
+.cart-btn {
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.4s ease; /* Плавная анимация */
+}
+
+.cart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Чуть темнее фон для контраста */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    animation: scaleUp 0.5s ease; /* Плавная анимация появления */
+    position: relative; /* Для позиционирования крестика */
+    overflow: hidden; /* Предотвращаем дергание из-за скроллбара */
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-content h2 {
+    color: #34495e;
+    margin-bottom: 15px;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content input,
+.modal-content select {
+    padding: 10px;
+    border: 1px solid #22c55e;
+    border-radius: 10px;
+    background: #f9f9f9;
+}
+
+.modal-content button {
+    padding: 10px;
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s ease; /* Плавная анимация */
+}
+
+.modal-content button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+.close-modal,
+.close-favorites {
+    font-size: 24px;
+    cursor: pointer;
+    color: #7f8c8d;
+    transition: all 0.4s ease; /* Плавная анимация */
+    display: inline-block; /* Устанавливаем inline-block, чтобы трансформация не влияла на размеры */
+}
+
+.close-modal:hover,
+.close-favorites:hover {
+    color: #e74c3c;
+    transform: rotate(90deg);
+}
+
+.add-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+    cursor: pointer;
+    transition: all 0.4s ease; /* Плавная анимация */
+}
+
+.add-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.6);
+}
+
+/* Стилі для модального вікна кошика */
+#favorites-modal .modal-content {
+    width: 800px; /* Збільшуємо ширину модального вікна */
+    max-width: 95%; /* Для адаптивності на малих екранах */
+    max-height: 80vh; /* Обмежуємо висоту */
+    overflow-y: auto; /* Додаємо прокрутку, якщо вміст не вміщається */
+    background: linear-gradient(135deg, #f0f4f8, #e8ecef); /* Світло-сірий із блакитним відтінком */
+    border-radius: 20px; /* Закруглені кути */
+    padding: 30px; /* Більше відступів */
+    box-shadow: 0 10px 40px rgba(0, 100, 0, 0.2); /* Темніша тінь із зеленим відтінком */
+    position: relative;
+    scrollbar-width: thin; /* Тонкий скроллбар для Firefox */
+    scrollbar-color: #2ecc71 #e8ecef; /* Цвет скроллбара для Firefox */
+}
+
+/* Стили для скроллбара в Webkit-браузерах (Chrome, Safari) */
+#favorites-modal .modal-content::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+#favorites-modal .modal-content::-webkit-scrollbar-track {
+    background: #e8ecef; /* Цвет фона трека */
+    border-radius: 10px;
+}
+
+#favorites-modal .modal-content::-webkit-scrollbar-thumb {
+    background: #2ecc71; /* Цвет ползунка */
+    border-radius: 10px;
+}
+
+#favorites-modal .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #27ae60; /* Темнее при наведении */
+}
+
+#favorites-modal h2 {
+    font-size: 2rem; /* Більший заголовок */
+    color: #1a3c34; /* Темно-зелений колір для заголовка */
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#favorites-modal .close-favorites {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 28px; /* Більший розмір хрестика */
+    color: #ff4d4d; /* Яскраво-червоний колір */
+    transition: transform 0.4s ease, color 0.4s ease; /* Плавная анимация */
+}
+
+/* Стилі для списку техніки */
+.favorites-list {
+    list-style: none;
+    padding: 0;
+    max-height: 400px; /* Обмежуємо висоту списку */
+    overflow-y: auto; /* Додаємо прокрутку */
+    margin-bottom: 20px;
+    scrollbar-width: thin; /* Тонкий скроллбар для Firefox */
+    scrollbar-color: #2ecc71 #e8ecef; /* Цвет скроллбара для Firefox */
+}
+
+/* Стили для скроллбара в Webkit-браузерах (Chrome, Safari) */
+.favorites-list::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+.favorites-list::-webkit-scrollbar-track {
+    background: #e8ecef; /* Цвет фона трека */
+    border-radius: 10px;
+}
+
+.favorites-list::-webkit-scrollbar-thumb {
+    background: #2ecc71; /* Цвет ползунка */
+    border-radius: 10px;
+}
+
+.favorites-list::-webkit-scrollbar-thumb:hover {
+    background: #27ae60; /* Темнее при наведении */
+}
+
+.favorites-list li {
+    display: flex; /* Використовуємо Flexbox для розташування */
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 15px; /* Відступ між елементами */
+    background: #ffffff; /* Білий фон для картки */
+    border-radius: 10px; /* Закруглені кути */
+    box-shadow: 0 4px 10px rgba(0, 100, 0, 0.1); /* Тінь для ефекту картки */
+    transition: transform 0.4s ease, box-shadow 0.4s ease; /* Плавная анимация */
+    animation: slideIn 0.5s ease;
+}
+
+.favorites-list li:hover {
+    transform: translateY(-3px); /* Легке підняття при наведенні */
+    box-shadow: 0 6px 15px rgba(0, 100, 0, 0.2); /* Посилена тінь */
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.favorites-list li:last-child {
+    margin-bottom: 0; /* Прибираємо відступ для останнього елемента */
+}
+
+/* Стилі для елементів у списку */
+.favorites-list span {
+    font-size: 1.1rem;
+    color: #1a3c34; /* Темно-зелений колір для назви */
+    font-weight: 500;
+    flex: 0 0 45%; /* Зменшена ширина для назви техніки (45% ширини li) для зсуву ліворуч */
+    white-space: nowrap; /* Запобігаємо переносу тексту */
+    overflow: hidden; /* Ховаємо текст, якщо він не вміщається */
+    text-overflow: ellipsis; /* Додаємо три крапки, якщо текст обрізається */
+}
+
+/* Стилі для контейнера з кількістю та кнопками */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 30%; /* Збільшена ширина для блоку з кількістю (30% ширини li) */
+    justify-content: center; /* Центруємо кнопки та кількість */
+}
+
+.quantity-controls button {
+    background: #4a90e2; /* Синій колір, як на скриншоті */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 20px; /* Уменьшенный размер */
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px; /* Уменьшенный шрифт */
+    transition: background 0.4s ease, transform 0.4s ease; /* Плавная анимация */
+}
+
+.quantity-controls button:hover {
+    background: #357abd; /* Темніший синій при наведенні */
+    transform: scale(1.1); /* Лёгкое увеличение при наведении */
+}
+
+.quantity-controls button:disabled {
+    background: #cccccc; /* Серый цвет для отключённой кнопки */
+    cursor: not-allowed;
+    transform: none; /* Отключаем эффект при наведении */
+}
+
+.quantity-controls span {
+    font-size: 0.9rem;
+    color: #34495e; /* Тёмно-серый цвет текста */
+}
+
+/* Стилі для кнопки "Видалити" */
+.favorites-list .remove-btn {
+    background: #2ecc71; /* Зелёный цвет, як на скриншоті */
+    color: white;
+    padding: 6px 10px; /* Уменьшенный размер */
+    border: none;
+    border-radius: 15px; /* Закруглённые края */
+    cursor: pointer;
+    transition: all 0.4s ease; /* Плавная анимация */
+    font-size: 0.8rem; /* Уменьшенный шрифт */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 0 0 15%; /* Фіксована ширина для кнопки "Видалити" (15% ширини li) */
+}
+
+.favorites-list .remove-btn:hover {
+    background: #27ae60; /* Темніший зелений при наведенні */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+/* Стилі для кнопок дій */
+.favorites-actions {
+    display: flex;
+    gap: 10px; /* Уменьшенный отступ между кнопками */
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.favorites-actions button {
+    padding: 8px 15px; /* Уменьшенный размер */
+    border: none;
+    border-radius: 15px; /* Закруглённые края */
+    cursor: pointer;
+    transition: all 0.4s ease; /* Плавная анимация */
+    font-size: 0.9rem; /* Уменьшенный шрифт */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rent-all-btn {
+    background: #2ecc71; /* Зелёный цвет, як на скриншоті */
+    color: white;
+}
+
+.rent-all-btn:hover {
+    background: #27ae60; /* Темніший зелений при наведенні */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+.clear-btn {
+    background: #2ecc71; /* Зелёный цвет, як на скриншоті */
+    color: white;
+}
+
+.clear-btn:hover {
+    background: #27ae60; /* Темніший зелений при наведенні */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+.continue-shopping-btn {
+    background: #2ecc71; /* Зелёный цвет, як на скриншоті */
+    color: white;
+}
+
+.continue-shopping-btn:hover {
+    background: #27ae60; /* Темніший зелений при наведенні */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+/* Стилі для модального вікна оренди кошика */
+#rent-cart-modal .modal-content {
+    width: 600px; /* Збільшена ширина модального вікна */
+    max-width: 90%; /* Для адаптивності на малих екранах */
+    background: linear-gradient(135deg, #f0f4f8, #e8ecef); /* Світло-сірий із блакитним відтінком */
+    border-radius: 20px; /* Закруглені кути */
+    padding: 30px; /* Більше відступів */
+    box-shadow: 0 10px 40px rgba(0, 100, 0, 0.2); /* Темніша тінь із зеленим відтінком */
+    position: relative;
+    overflow-y: auto; /* Додаємо прокрутку */
+    scrollbar-width: thin; /* Тонкий скроллбар для Firefox */
+    scrollbar-color: #2ecc71 #e8ecef; /* Цвет скроллбара для Firefox */
+}
+
+/* Стили для скроллбара в Webkit-браузерах (Chrome, Safari) */
+#rent-cart-modal .modal-content::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+#rent-cart-modal .modal-content::-webkit-scrollbar-track {
+    background: #e8ecef; /* Цвет фона трека */
+    border-radius: 10px;
+}
+
+#rent-cart-modal .modal-content::-webkit-scrollbar-thumb {
+    background: #2ecc71; /* Цвет ползунка */
+    border-radius: 10px;
+}
+
+#rent-cart-modal .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #27ae60; /* Темнее при наведении */
+}
+
+#rent-cart-modal h2 {
+    font-size: 2rem; /* Більший заголовок */
+    color: #1a3c34; /* Темно-зелений колір для заголовка */
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#rent-cart-modal .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 28px; /* Більший розмір хрестика */
+    color: #ff4d4d; /* Яскраво-червоний колір */
+    transition: transform 0.4s ease, color 0.4s ease; /* Плавная анимация */
+}
+
+/* Стилі для списку техніки в модальному вікні оренди */
+.equipment-list {
+    margin-bottom: 20px;
+}
+
+.equipment-list h3 {
+    font-size: 1.3rem;
+    color: #34495e;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #2ecc71; /* Зелена підкреслювальна лінія */
+    padding-bottom: 5px;
+}
+
+.rent-equipment-list {
+    list-style: none;
+    padding: 0;
+    max-height: 200px; /* Обмежуємо висоту списку */
+    overflow-y: auto; /* Додаємо прокрутку */
+    scrollbar-width: thin; /* Тонкий скроллбар для Firefox */
+    scrollbar-color: #2ecc71 #e8ecef; /* Цвет скроллбара для Firefox */
+}
+
+/* Стили для скроллбара в Webkit-браузерах (Chrome, Safari) */
+.rent-equipment-list::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+.rent-equipment-list::-webkit-scrollbar-track {
+    background: #e8ecef; /* Цвет фона трека */
+    border-radius: 10px;
+}
+
+.rent-equipment-list::-webkit-scrollbar-thumb {
+    background: #2ecc71; /* Цвет ползунка */
+    border-radius: 10px;
+}
+
+.rent-equipment-list::-webkit-scrollbar-thumb:hover {
+    background: #27ae60; /* Темнее при наведении */
+}
+
+.rent-equipment-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #ffffff; /* Білий фон для картки */
+    border-radius: 10px; /* Закруглені кути */
+    box-shadow: 0 2px 8px rgba(0, 100, 0, 0.1); /* Легка тінь */
+    transition: transform 0.4s ease, box-shadow 0.4s ease; /* Плавная анимация */
+}
+
+.rent-equipment-list li:hover {
+    transform: translateY(-2px); /* Легке підняття при наведенні */
+    box-shadow: 0 4px 12px rgba(0, 100, 0, 0.2); /* Посилена тінь */
+}
+
+.rent-equipment-list li:last-child {
+    margin-bottom: 0; /* Прибираємо відступ для останнього елемента */
+}
+
+.rent-equipment-list li i {
+    margin-right: 8px;
+    color: #2ecc71; /* Зелений колір для іконки */
+}
+
+.rent-equipment-list li span.equipment-name {
+    font-size: 1rem;
+    color: #1a3c34; /* Темно-зелений колір для назви */
+    font-weight: 500;
+    flex: 1; /* Назва займає доступне місце */
+}
+
+.rent-equipment-list li span.quantity {
+    font-size: 0.9rem;
+    color: #34495e; /* Темно-сірий колір для кількості */
+    font-weight: 500;
+}
+
+/* Стилі для форми оренди */
+#rent-cart-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#rent-cart-form label {
+    display: block;
+    margin: 5px 0;
+    color: #34495e;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+#rent-cart-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #22c55e;
+    border-radius: 10px;
+    background: #f9f9f9;
+    transition: all 0.4s ease; /* Плавная анимация */
+    font-size: 1rem;
+    color: #34495e;
+}
+
+#rent-cart-form input:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+    outline: none;
+    background: #ffffff;
+}
+
+#rent-cart-form input[readonly] {
+    background: #e9ecef;
+    cursor: not-allowed;
+    color: #7f8c8d;
+}
+
+#rent-cart-form p {
+    margin: 15px 0;
+    font-size: 1.1rem;
+    color: #34495e;
+}
+
+#rent-cart-form #cart-rental-cost {
+    font-weight: bold;
+    color: #2ecc71;
+}
+
+#rent-cart-form button {
+    padding: 12px;
+    background: linear-gradient(90deg, #f39c12, #e67e22); /* Помаранчевий градієнт */
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s ease; /* Плавная анимация */
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+#rent-cart-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+    background: linear-gradient(90deg, #e67e22, #f39c12); /* Зворотний градієнт при наведенні */
+}
+
+/* Стили для модального окна добавления/редактирования техники */
+#modal .modal-content {
+    width: 600px; /* Увеличиваем ширину с 500px до 600px */
+    max-width: 90%; /* Адаптивность для маленьких экранов */
+    background: linear-gradient(135deg, #f0f4f8, #e8ecef); /* Светло-серый с голубым градиентом */
+    border-radius: 20px; /* Закругленные углы */
+    padding: 30px; /* Больше отступов */
+    box-shadow: 0 10px 40px rgba(0, 100, 0, 0.2); /* Темная тень с зеленым оттенком */
+    position: relative;
+    overflow-y: auto; /* Додаємо прокрутку */
+    scrollbar-width: thin; /* Тонкий скроллбар для Firefox */
+    scrollbar-color: #2ecc71 #e8ecef; /* Цвет скроллбара для Firefox */
+}
+
+/* Стили для скроллбара в Webkit-браузерах (Chrome, Safari) */
+#modal .modal-content::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+#modal .modal-content::-webkit-scrollbar-track {
+    background: #e8ecef; /* Цвет фона трека */
+    border-radius: 10px;
+}
+
+#modal .modal-content::-webkit-scrollbar-thumb {
+    background: #2ecc71; /* Цвет ползунка */
+    border-radius: 10px;
+}
+
+#modal .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #27ae60; /* Темнее при наведении */
+}
+
+#modal .modal-content h2 {
+    font-size: 2rem; /* Больший заголовок */
+    color: #1a3c34; /* Темно-зеленый цвет для заголовка */
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Отступ между иконкой и текстом */
+}
+
+#modal .modal-content h2 i {
+    color: #2ecc71; /* Зеленый цвет для иконки */
+    font-size: 1.5rem;
+}
+
+#modal .modal-content .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 28px; /* Больший размер крестика */
+    color: #ff4d4d; /* Ярко-красный цвет */
+    transition: transform 0.4s ease, color 0.4s ease; /* Плавная анимация */
+}
+
+/* Стили для формы внутри модального окна */
+#modal .modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Отступы между полями */
+}
+
+#modal .modal-content form label {
+    color: #34495e; /* Темно-серый цвет для меток */
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+#modal .modal-content form input,
+#modal .modal-content form select,
+#modal .modal-content form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #22c55e; /* Зеленая рамка */
+    border-radius: 10px;
+    background: #f9f9f9; /* Светлый фон */
+    transition: all 0.4s ease; /* Плавная анимация */
+    font-size: 1rem;
+    color: #34495e;
+    resize: vertical; /* Для textarea */
+}
+
+#modal .modal-content form textarea {
+    min-height: 80px; /* Минимальная высота для textarea */
+}
+
+#modal .modal-content form input:focus,
+#modal .modal-content form select:focus,
+#modal .modal-content form textarea:focus {
+    border-color: #2ecc71; /* Зеленая рамка при фокусе */
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.3); /* Легкая тень */
+    outline: none;
+    background: #ffffff; /* Белый фон при фокусе */
+}
+
+#modal .modal-content form button {
+    padding: 12px;
+    background: linear-gradient(90deg, #2ecc71, #27ae60); /* Зеленый градиент */
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s ease; /* Плавная анимация */
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Отступ между иконкой и текстом */
+}
+
+#modal .modal-content form button i {
+    font-size: 1.2rem;
+}
+
+#modal .modal-content form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+    background: linear-gradient(90deg, #27ae60, #2ecc71); /* Обратный градиент при наведении */
+}

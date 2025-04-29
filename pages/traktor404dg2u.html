@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трактор Донгфенг 404 ДГ - AgroFleet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/pages/modal.css">
+    <link rel="stylesheet" href="/components/navigation.css">
+</head>
+<body>
+    <!-- Контейнер для навігації -->
+    <div id="navigation-container"></div>
+
+    <main>
+        <section class="product-details">
+            <div class="product-container" data-equipment-id="1" data-name="Трактор Dongfeng 404 DG">
+                <div class="image-section">
+                    <img id="main-image" class="main" src="../images/tractor-404dg2u.jpg" alt="Трактор 404DG2U">
+                    <div class="gallery">
+                        <img src="../images/tractor-404dg2u.jpg" alt="Трактор 404DG2U">
+                        <img src="../images/33369_minitraktor-dongfeng-df-404-dg2-1000x1000.jpg" alt="Трактор 404DG2U">
+                        <img src="../images/Minitraktor_DongFeng_DF_244_DG_b420.jpg" alt="Трактор 404DG2U">
+                        <img src="../images/traktor-donfeng-404dg2u-02-1000x1000.jpg" alt="Трактор 404DG2U">
+                    </div>
+                </div>
+                <div class="details-section">
+                    <div class="characteristics-block">
+                        <h2><i class="fas fa-cogs"></i> Характеристики:</h2>
+                        <ul id="characteristics-list">
+                            <li><strong>Двигун:</strong> 4-циліндровий, дизельний</li>
+                            <li><strong>Потужність:</strong> 40 к.с</li>
+                            <li><strong>Привід:</strong> Повний (4x4)</li>
+                            <li><strong>Система охолодження:</strong> Водяне рідинне охолодження</li>
+                            <li><strong>Трансмісія:</strong> Механічна, 8 передач вперед та 2 назад</li>
+                            <li><strong>Гідравлічна система:</strong> Є, з можливістю підключення навісного обладнання</li>
+                            <li><strong>Колісна база:</strong> 1780 мм</li>
+                            <li><strong>Вага:</strong> 1550 кг</li>
+                            <li><strong>Максимальна швидкість:</strong> до 35 км/год</li>
+                            <li><strong>Паливний бак:</strong> 29 літрів</li>
+                            <li><strong>Колеса:</strong> Передні 7.5-16, задні 12.4-24</li>
+                            <li><strong>Кабіна:</strong> Є, з захистом від пилу та кондиціонером</li>
+                            <li><strong>Гальмівна система:</strong> Дискові гальма в масляній ванні</li>
+                            <li><strong>Додаткове обладнання:</strong> Можливість встановлення фронтального навантажувача</li>
+                            <li><strong>Тип рами:</strong> Посилена рама для важких умов роботи</li>
+                            <li><strong>Охолоджувач:</strong> Наявність охолоджувача повітря</li>
+                            <li><strong>Витрата пального:</strong> 8 л/год при максимальному навантаженні</li>
+                        </ul>
+                        <button id="toggle-characteristics" class="toggle-button">Показати всі характеристики</button>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="product-info">
+                        <h3><i class="fas fa-info-circle"></i> Про товар:</h3>
+                        <p>Трактор Донгфенг 404 ДГ - це потужний та універсальний агрегат, ідеальний для виконання різноманітних сільськогосподарських завдань. Завдяки дизельному 4-циліндровому двигуну та високій потужності в 40 кінських сил, трактор здатний працювати в складних умовах з високим навантаженням. Це ідеальний вибір для аграріїв, які потребують потужного, але доступного рішення для роботи в полі.</p>
+                        <p><strong>Вартість оренди:</strong> 1000 UAH за день</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="notification" class="notification"></div>
+
+    <!-- Підключаємо скрипти -->
+    <script type="module">
+        import { initNavigation } from '/components/navigation.js';
+
+        // Ініціалізація навігації
+        async function initializePage() {
+            try {
+                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html'; // Перенаправляємо на сторінку входу
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+                // Ініціалізуємо навігацію після успішної перевірки
+                initNavigation();
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                window.location.href = '/profile.html'; // Перенаправляємо у разі помилки
+            }
+        }
+
+        // Викликаємо ініціалізацію
+        initializePage();
+    </script>
+    <script src="/pages/modal.js"></script>
+</body>
+</html>

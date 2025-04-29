@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Парк техніки - AgroFleet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/public/profile.css">
+    <link rel="stylesheet" href="/public/equipment_park.css">
+    <link rel="stylesheet" href="/components/navigation.css">
+    <style>
+        .modal-content form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .modal-content form input,
+        .modal-content form select,
+        .modal-content form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .modal-content form input[readonly] {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+        }
+
+        .modal-content form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal-content form button:hover {
+            background-color: #45a049;
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        #cart-rental-cost {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .user-info {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .user-info h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .user-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Контейнер для навигации -->
+    <div id="navigation-container"></div>
+
+    <main>
+        <!-- Додаємо контейнер для кошика -->
+        <div class="cart-container" id="cartContainer"></div>
+
+        <div class="content-wrapper">
+            <div class="filter-container">
+                <h2><i class="fas fa-filter"></i> Фільтр</h2>
+                <div class="search-container">
+                    <input type="text" id="search" placeholder="Пошук за назвою...">
+                </div>
+                <div class="filter-group">
+                    <label><input type="checkbox" class="filter" data-category="Трактори"> Трактори</label>
+                    <label><input type="checkbox" class="filter" data-category="Плуги"> Плуги</label>
+                    <label><input type="checkbox" class="filter" data-category="Культиватори"> Культиватори</label>
+                    <label><input type="checkbox" class="filter" data-category="Комбайни"> Комбайни</label>
+                    <label><input type="checkbox" class="filter" data-category="Обприскувачі"> Обприскувачі</label>
+                </div>
+            </div>
+            <div class="container" id="container">
+                <!-- Карточки будуть додаватися через JS -->
+            </div>
+        </div>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal()">×</span>
+                <h2 id="modal-title"><i class="fas fa-plus"></i> Додати техніку</h2>
+                <form id="machineForm">
+                    <label for="name">Назва техніки:</label>
+                    <input type="text" id="name" placeholder="Назва техніки" required>
+
+                    <label for="category">Тип техніки:</label>
+                    <select id="category" required>
+                        <option value="" disabled selected>Виберіть тип техніки</option>
+                        <option value="Трактори">Трактори</option>
+                        <option value="Плуги">Плуги</option>
+                        <option value="Культиватори">Культиватори</option>
+                        <option value="Комбайни">Комбайни</option>
+                        <option value="Обприскувачі">Обприскувачі</option>
+                    </select>
+
+                    <label for="details">Характеристики:</label>
+                    <textarea id="details" placeholder="Характеристики (напр. Потужність: 40 к.с.)"></textarea>
+
+                    <label for="image">URL зображення:</label>
+                    <input type="text" id="image" placeholder="URL зображення" required>
+
+                    <label for="link">Посилання на сторінку:</label>
+                    <input type="text" id="link" placeholder="Посилання (наприклад, pages/traktor404dg2u.html)">
+
+                    <label for="price">Ціна за день (UAH):</label>
+                    <input type="number" id="price" placeholder="Ціна за день (UAH)" step="0.01" required>
+
+                    <button type="submit"><i class="fas fa-save"></i> Зберегти</button>
+                </form>
+            </div>
+        </div>
+
+        <button class="add-btn" onclick="openAddModal()"><i class="fas fa-plus"></i></button>
+
+        <!-- Оновлене модальне вікно кошика -->
+        <div id="favorites-modal" class="modal">
+            <div class="modal-content favorites-modal-content">
+                <span class="close-favorites" onclick="closeFavoritesModal()">×</span>
+                <h2><i class="fas fa-shopping-basket"></i> Ваш кошик</h2>
+                <ul id="favorites-list" class="favorites-list"></ul>
+                <div class="favorites-actions">
+                    <button class="rent-all-btn" onclick="rentAllFavorites()">
+                        <i class="fas fa-hand-holding"></i> Орендувати все
+                    </button>
+                    <button class="clear-btn" onclick="clearFavorites()">
+                        <i class="fas fa-trash"></i> Очистити кошик
+                    </button>
+                    <button class="continue-shopping-btn" onclick="closeFavoritesModal()">
+                        <i class="fas fa-arrow-left"></i> Продовжити покупки
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальне вікно для оренди кошика -->
+        <div id="rent-cart-modal" class="modal">
+            <div class="modal-content rent-cart-modal-content">
+                <span id="close-rent-modal" class="close-modal">×</span>
+                <h2><i class="fas fa-hand-holding"></i> Оформлення оренди</h2>
+                <!-- Список техніки -->
+                <div class="equipment-list">
+                    <h3>Техніка для оренди:</h3>
+                    <ul id="rent-equipment-list" class="rent-equipment-list"></ul>
+                </div>
+                <form id="rent-cart-form">
+                    <!-- Додаємо поля для даних користувача -->
+                    <label for="user-fullname">ПІБ:</label>
+                    <input type="text" id="user-fullname" name="fullname" placeholder="Ваше ПІБ" required>
+
+                    <label for="user-email">Email:</label>
+                    <input type="email" id="user-email" name="email" placeholder="Ваш Email" required>
+
+                    <label for="user-phone">Телефон:</label>
+                    <input type="tel" id="user-phone" name="phone" placeholder="Ваш телефон" required>
+
+                    <!-- Нові поля для міста та адреси -->
+                    <label for="user-city">Місто:</label>
+                    <input type="text" id="user-city" name="city" placeholder="Ваше місто" required>
+
+                    <label for="user-address">Адреса доставки:</label>
+                    <input type="text" id="user-address" name="address" placeholder="Ваша адреса доставки" required>
+
+                    <label for="cart-rental-start">Дата початку оренди:</label>
+                    <input type="date" id="cart-rental-start" required>
+
+                    <label for="cart-rental-period">Тривалість оренди (дні):</label>
+                    <input type="number" id="cart-rental-period" min="1" required>
+
+                    <label for="cart-rental-end">Дата закінчення оренди:</label>
+                    <input type="date" id="cart-rental-end" readonly>
+
+                    <label for="cart-delivery-date">Дата доставки:</label>
+                    <input type="date" id="cart-delivery-date" required>
+
+                    <p>Загальна вартість: <span id="cart-rental-cost">0 UAH</span></p>
+
+                    <button type="submit" class="submit-cart-btn"><i class="fas fa-check"></i> Підтвердити замовлення</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Підключаємо скрипти -->
+    <script type="module">
+        import { initNavigation } from '/components/navigation.js';
+
+        // Перевіряємо авторизацію перед ініціалізацією навігації
+        async function initializePage() {
+            try {
+                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html'; // Перенаправляємо на сторінку входу
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+                // Ініціалізуємо навігацію після успішної перевірки
+                initNavigation();
+
+                // Додаємо кошик до нового контейнера
+                const cartContainer = document.getElementById('cartContainer');
+                const cartIcon = document.createElement('div');
+                cartIcon.className = 'cart-icon';
+                cartIcon.id = 'cartIcon';
+                cartIcon.innerHTML = `
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount">0</span>
+                `;
+                cartContainer.appendChild(cartIcon);
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                window.location.href = '/profile.html'; // Перенаправляємо на сторінку входу у разі помилки
+            }
+        }
+
+        // Викликаємо ініціалізацію
+        initializePage();
+    </script>
+    <script type="module" src="/public/equipment_park.js"></script>
+</body>
+</html>

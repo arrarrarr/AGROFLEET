@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оцінка ефективності - AgroFleet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../components/navigation.css">
+    <link rel="stylesheet" href="./public/effectiveness.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #2ecc71;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            z-index: 1000;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        .metric {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .metric:hover {
+            transform: scale(1.05);
+        }
+
+        .flatpickr-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay"></div>
+    <div class="spinner" id="loadingSpinner"></div>
+
+    <div id="navigation-container"></div>
+
+    <main>
+        <section class="effectiveness-report">
+            <h2><i class="fas fa-chart-line"></i> Оцінка ефективності</h2>
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label for="filterDate"><i class="fas fa-calendar-alt"></i> Дата:</label>
+                    <input type="text" id="filterDate" placeholder="Оберіть дату">
+                </div>
+                <div class="filter-group">
+                    <label for="filterCategory"><i class="fas fa-filter"></i> Категорія:</label>
+                    <select id="filterCategory">
+                        <option value="">Усі</option>
+                        <option value="users">Користувачі</option>
+                        <option value="maintenance">Техобслуговування</option>
+                        <option value="moto_time">Мотогодини</option>
+                        <option value="rentals">Оренда</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dashboard" id="dashboard">
+                <div class="metric" id="total-users-card">
+                    <h2><i class="fas fa-users"></i> Загальна кількість користувачів</h2>
+                    <p id="total-users">Завантаження...</p>
+                </div>
+                <div class="metric" id="maintenance-records-card">
+                    <h2><i class="fas fa-tools"></i> Записи техобслуговування</h2>
+                    <p id="maintenance-records">Завантаження...</p>
+                </div>
+                <div class="metric" id="moto-hours-card">
+                    <h2><i class="fas fa-clock"></i> Мотогодини</h2>
+                    <p id="moto-hours">Завантаження...</p>
+                </div>
+                <div class="metric" id="rentals-count-card">
+                    <h2><i class="fas fa-handshake"></i> Кількість оренд</h2>
+                    <p id="rentals-count">Завантаження...</p>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="efficiencyChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="trendChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">×</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+  
+
+    <script type="module">
+        import { initNavigation } from '../components/navigation.js';
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'block';
+            document.getElementById('loadingSpinner').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }
+
+        async function initializePage() {
+            showLoading();
+            try {
+                console.log('Перевірка авторизації...');
+                const response = await fetch('/api/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html?authRequired=true';
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+                if (user.role !== 'admin' && user.role !== 'manager') {
+                    console.log('Доступ заборонено: недостатньо прав для користувача з роллю:', user.role);
+                    window.location.href = '/profile.html?accessDenied=true';
+                    return;
+                }
+                initNavigation();
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                window.location.href = '/profile.html?authRequired=true';
+            } finally {
+                hideLoading();
+            }
+        }
+
+        initializePage();
+
+        flatpickr("#filterDate", {
+            locale: "uk",
+            dateFormat: "Y-m-d"
+        });
+    </script>
+    <script src="./public/effectiveness.js" type="module"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93654ceae85abfff',t:'MTc0NTY2MjMzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

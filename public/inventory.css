@@ -1,0 +1,562 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.inventory-management {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 128, 0, 0.2);
+    width: 90%;
+    max-width: 1200px;
+    animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Reduced duration, dynamic easing */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    color: #1a3c34;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+h1 i {
+    color: #2ecc71;
+}
+
+.report-actions {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+}
+
+.filter-group label {
+    color: #34495e;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+}
+
+.filter-group label:hover {
+    color: #2ecc71;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #22c55e;
+    background: #f9f9f9;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+    min-width: 200px;
+    width: 200px;
+    max-width: 100%;
+    height: 40px;
+    padding-left: 10px;
+    text-align: left;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+    background: #fff;
+    outline: none;
+}
+
+#exportInventoryBtn, #addInventoryBtn {
+    width: 150px;
+    height: 40px;
+    padding: 0 10px;
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+#exportInventoryBtn:hover, #addInventoryBtn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.5);
+}
+
+.history-icon {
+    font-size: 1.5rem;
+    color: #27ae60;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+    padding: 8px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+    color: white;
+    position: absolute;
+    right: 0;
+    top: -50px;
+}
+
+.history-icon:hover {
+    transform: scale(1.2);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.5);
+}
+
+.inventory-grid, #order-history-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.expense-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 128, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+    border-left: 5px solid #22c55e;
+    display: block;
+    position: relative;
+}
+
+.expense-card.low-stock {
+    background: #ffe6e6;
+}
+
+.expense-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 128, 0, 0.2);
+    background: #f0f7f3;
+}
+
+.expense-card h3 {
+    color: #34495e;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.expense-card p {
+    color: #7f8c8d;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.expense-card p i {
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+}
+
+.expense-card:hover p i {
+    color: #219653;
+}
+
+.actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.actions button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+    position: relative;
+    overflow: hidden;
+}
+
+.edit-btn {
+    background: #f1c40f;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #e1b309;
+    transform: scale(1.1);
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+    transform: scale(1.1);
+}
+
+.expense-delete-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.expense-delete-btn:hover {
+    background: #c0392b;
+    transform: scale(1.1);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px 0;
+    animation: fadeModal 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Reduced duration, dynamic easing */
+}
+
+@keyframes fadeModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    width: 800px;
+    max-width: 90%;
+    background: linear-gradient(135deg, #f0f4f8, #e8ecef);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 100, 0, 0.2);
+    position: relative;
+    overflow-y: auto;
+    max-height: 80vh;
+    animation: scaleUp 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Reduced duration, dynamic easing */
+}
+
+#orderHistoryModal .modal-content {
+    width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #2ecc71 #e8ecef;
+}
+
+#orderHistoryModal .modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#orderHistoryModal .modal-content::-webkit-scrollbar-track {
+    background: #e8ecef;
+    border-radius: 10px;
+}
+
+#orderHistoryModal .modal-content::-webkit-scrollbar-thumb {
+    background: #2ecc71;
+    border-radius: 10px;
+}
+
+#orderHistoryModal .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #27ae60;
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    color: #ff4d4d;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+}
+
+.close-button:hover {
+    color: #e74c3c;
+    transform: rotate(90deg);
+}
+
+.modal-content h2 {
+    font-size: 2rem;
+    color: #1a3c34;
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.modal-content h2 i {
+    color: #2ecc71;
+    font-size: 1.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    color: #34495e;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #22c55e;
+    border-radius: 10px;
+    background: #f9f9f9;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+    font-size: 1rem;
+    color: #34495e;
+}
+
+input[readonly] {
+    background: #e0e0e0;
+    cursor: not-allowed;
+}
+
+textarea {
+    min-height: 100px;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+    outline: none;
+    background: #ffffff;
+}
+
+button[type="submit"] {
+    padding: 12px;
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Faster, dynamic transition */
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+footer {
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 1024px) {
+    .inventory-management {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .report-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .filter-group {
+        width: 100%;
+        align-items: center;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    #addInventoryBtn, #exportInventoryBtn {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    #orderHistoryModal .modal-content {
+        width: 90%;
+        max-height: 85vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .inventory-management {
+        width: 95%;
+    }
+
+    .inventory-grid, #order-history-content {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+    }
+
+    #orderHistoryModal .modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .report-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .filter-group {
+        width: 100%;
+        align-items: center;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    #addInventoryBtn, #exportInventoryBtn {
+        width: 100%;
+        max-width: 300px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .history-icon {
+        font-size: 1.2rem;
+        padding: 6px;
+        position: static;
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .inventory-management {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    #addInventoryBtn, #exportInventoryBtn {
+        width: 100%;
+        max-width: 200px;
+        font-size: 0.9rem;
+    }
+
+    .expense-card {
+        padding: 15px;
+    }
+
+    .expense-card h3 {
+        font-size: 1rem;
+    }
+
+    .expense-card p {
+        font-size: 0.9rem;
+    }
+
+    .modal-content {
+        padding: 15px;
+    }
+
+    #orderHistoryModal .modal-content {
+        width: 98%;
+        max-height: 80vh;
+    }
+
+    .modal-content h2 {
+        font-size: 1.2rem;
+    }
+}

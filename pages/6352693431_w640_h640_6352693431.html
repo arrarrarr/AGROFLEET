@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обприскувач ОП-400/12 - AgroFleet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/pages/modal.css">
+    <link rel="stylesheet" href="/components/navigation.css">
+</head>
+<body>
+    <!-- Контейнер для навігації -->
+    <div id="navigation-container"></div>
+
+    <main>
+        <section class="product-details">
+            <div class="product-container" data-equipment-id="5" data-name="Обприскувач ОП-400/12">
+                <div class="image-section">
+                    <img id="main-image" class="main" src="../images/6352693431_w640_h640_6352693431.jpg" alt="Навісний обприскувач">
+                    <div class="gallery">
+                        <img src="../images/6352693431_w640_h640_6352693431.jpg" alt="Навісний обприскувач">
+                        <img src="../images/6352693429_w640_h640_6352693429.jpg" alt="Навісний обприскувач">
+                        <img src="../images/6352693433_w640_h640_6352693433.jpg" alt="Навісний обприскувач">
+                        <img src="../images/6352693430_w640_h640_6352693430.jpg" alt="Навісний обприскувач">
+                    </div>
+                </div>
+                <div class="details-section">
+                    <div class="characteristics-block">
+                        <h2><i class="fas fa-cogs"></i> Характеристики:</h2>
+                        <ul id="characteristics-list">
+                            <li><strong>Тип обприскувача:</strong> Навісний обприскувач</li>
+                            <li><strong>Об'єм резервуара:</strong> 4000 літрів</li>
+                            <li><strong>Ширина обробки:</strong> 12 метрів</li>
+                            <li><strong>Двигун:</strong> 4-циліндровий, дизельний, потужністю 100-150 к.с. (залежно від комплектації)</li>
+                            <li><strong>Тип охолодження:</strong> Водяне рідинне охолодження</li>
+                            <li><strong>Гідравлічна система:</strong> Є, з можливістю підключення до трактора</li>
+                            <li><strong>Тиск робочий:</strong> 0.2-0.4 Мпа</li>
+                            <li><strong>Паливний бак:</strong> 150-200 літрів (залежно від комплектації)</li>
+                            <li><strong>Максимальна швидкість:</strong> до 15 км/год</li>
+                            <li><strong>Витрата рідини:</strong> 50-200 літрів на гектар (залежить від культури та умов обробки)</li>
+                            <li><strong>Регулювання роботи:</strong> Автоматичне регулювання тиску та витрати</li>
+                            <li><strong>Кабіна:</strong> Немає, обприскувач управляється з трактора</li>
+                            <li><strong>Системи фільтрації:</strong> Наявність фільтрів для пального та обприскувальної рідини</li>
+                            <li><strong>Тип форсунок:</strong> Керамічні або латунні (залежно від комплектації)</li>
+                            <li><strong>Габарити:</strong> 4000 x 2500 x 2500 мм (залежно від модифікацій)</li>
+                            <li><strong>Вага:</strong> приблизно 700-1000 кг (залежно від комплектації)</li>
+                            <li><strong>Матеріал рамки:</strong> Сталева / алюмінієва конструкція для підвищеної міцності</li>
+                        </ul>
+                        <button id="toggle-characteristics" class="toggle-button">Показати всі характеристики</button>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="product-info">
+                        <h3><i class="fas fa-info-circle"></i> Про товар:</h3>
+                        <p>Обприскувач «ОП-400/12» штанговий, призначений для обробки польових культур, у тому числі оброблюваних за інтенсивною технологією, пестицидами, гербіцидами тощо, а також внесення рідких комплексних добрив шляхом їх поверхневого обприскування. Обприскувач агрегатується з трактором від 18 л.с, обладнаним коробкою та валом відбору потужності.</p>
+                        <p><strong>Вартість оренди:</strong> 300 UAH за день</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="notification" class="notification"></div>
+
+    <!-- Підключаємо скрипти -->
+    <script type="module">
+        import { initNavigation } from '/components/navigation.js';
+
+        // Ініціалізація навігації
+        async function initializePage() {
+            try {
+                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html'; // Перенаправляємо на сторінку входу
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+                // Ініціалізуємо навігацію після успішної перевірки
+                initNavigation();
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                window.location.href = '/profile.html'; // Перенаправляємо у разі помилки
+            }
+        }
+
+        // Викликаємо ініціалізацію
+        initializePage();
+    </script>
+    <script src="/pages/modal.js" defer></script>
+</body>
+</html>

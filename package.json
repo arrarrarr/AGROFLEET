@@ -1,0 +1,44 @@
+{
+  "name": "diplom_sait",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha --loader esm",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "bcrypt": "^5.1.1",
+    "compression": "^1.8.0",
+    "connect-sqlite3": "^0.9.15",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.6.0",
+    "ejs": "^3.1.10",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "jspdf": "^3.0.0",
+    "nodemailer": "^6.10.0",
+    "open": "^10.1.0",
+    "rimraf": "^6.0.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "ws": "^8.18.1"
+  },
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "chai-http": "^4.3.0",
+    "mocha": "^11.0.1",
+    "nodemon": "^3.1.9"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
+}

@@ -1,0 +1,621 @@
+body {
+    font-family: "Noto Sans", Arial, sans-serif;
+    background: linear-gradient(135deg, #e3f2e1, #f5f7f9);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.contracts-management {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 100px;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 100, 0, 0.2);
+    width: 98%;
+    max-width: 2000px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.inner-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    color: #1a3c34;
+    font-size: 2rem;
+    margin-bottom: 5px;
+    margin-top: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+h1 i {
+    color: #4a8b5c;
+}
+
+.report-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    margin: 5px;
+}
+
+.filter-group label {
+    margin-bottom: 5px;
+    color: #34495e;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.filter-group label:hover {
+    color: #4a8b5c;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 8px;
+    border: 1px solid #22c55e;
+    border-radius: 10px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 180px;
+    background: #f9f9f9;
+    transition: all 0.4s ease;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: #4a8b5c;
+    box-shadow: 0 0 5px rgba(74, 139, 92, 0.3);
+    outline: none;
+    background: #ffffff;
+}
+
+#addContractBtn {
+    padding: 8px 16px;
+    background: linear-gradient(90deg, #4a8b5c, #3a6b4c);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(74, 139, 92, 0.3);
+    transform: translateY(-5px);
+}
+
+#addContractBtn:hover {
+    transform: translateY(-7px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(74, 139, 92, 0.5);
+    background: linear-gradient(90deg, #3a6b4c, #4a8b5c);
+}
+
+.contracts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Reduced min width to 300px for smaller cards, still adaptive */
+    gap: 20px; /* Reduced gap for a tighter layout */
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 1200px;
+    transition: all 0.5s ease;
+}
+
+.contract-card {
+    background: #fff;
+    padding: 15px; /* Reduced from 25px to make cards smaller */
+    border-radius: 12px; /* Slightly smaller border-radius */
+    box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1); /* Slightly smaller shadow */
+    border-left: 4px solid #4a8b5c; /* Slightly thinner border */
+    transition: all 0.4s ease;
+}
+
+.contract-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 128, 0, 0.2);
+}
+
+.contract-card h3 {
+    margin: 0 0 8px; /* Reduced margin */
+    color: #34495e;
+    font-size: 1.1rem; /* Reduced font size */
+}
+
+.contract-card p {
+    margin: 4px 0;
+    color: #7f8c8d;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px; /* Уменьшаем gap с 6px до 4px */
+    font-size: 0.85rem; /* Уменьшаем шрифт с 0.9rem до 0.85rem */
+    white-space: nowrap; /* Запрещаем перенос текста */
+}
+
+.contract-card p i {
+    color: #4a8b5c;
+}
+
+.contract-actions {
+    margin-top: 10px; /* Reduced margin */
+    display: flex;
+    gap: 6px; /* Reduced gap between buttons */
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.contract-actions button {
+    padding: 6px 12px; /* Reduced padding for smaller buttons */
+    border: none;
+    border-radius: 12px; /* Slightly smaller border-radius */
+    cursor: pointer;
+    color: white;
+    font-size: 0.8rem; /* Reduced font size */
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Reduced gap */
+    transition: all 0.4s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Smaller shadow */
+}
+
+.contract-actions .edit-btn {
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+}
+
+.contract-actions .edit-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 12px rgba(243, 156, 18, 0.4);
+    background: linear-gradient(90deg, #e67e22, #f39c12);
+}
+
+.contract-actions .delete-btn {
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.contract-actions .delete-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 12px rgba(231, 76, 60, 0.4);
+    background: linear-gradient(90deg, #c0392b, #e74c3c);
+}
+
+.contract-actions .export-btn {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+}
+
+.contract-actions .export-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 12px rgba(52, 152, 219, 0.4);
+    background: linear-gradient(90deg, #2980b9, #3498db);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #ffffff, #f0f4f8);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 100, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    position: relative;
+    animation: scaleUp 0.5s ease;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4a8b5c #f0f4f8;
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f0f4f8;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #4a8b5c;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #3a6b4c;
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 28px;
+    color: #ff4d4d;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.close-button:hover {
+    color: #e74c3c;
+    transform: rotate(90deg);
+}
+
+.modal-content h2 {
+    font-size: 1.8rem;
+    color: #1a3c34;
+    margin-bottom: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #22c55e;
+    border-radius: 10px;
+    font-size: 14px;
+    background: #f9f9f9;
+    transition: all 0.4s ease;
+    resize: vertical;
+}
+
+.modal-content textarea {
+    min-height: 100px;
+}
+
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+    border-color: #4a8b5c;
+    box-shadow: 0 0 5px rgba(74, 139, 92, 0.3);
+    outline: none;
+    background: #ffffff;
+}
+
+.modal-content button[type="submit"] {
+    background: linear-gradient(90deg, #4a8b5c, #3a6b4c);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(74, 139, 92, 0.3);
+    margin: 20px auto 0;
+}
+
+.modal-content button[type="submit"]:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(74, 139, 92, 0.5);
+    background: linear-gradient(90deg, #3a6b4c, #4a8b5c);
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .contracts-management {
+        padding: 80px;
+        width: 98%;
+        max-width: 1100px;
+    }
+
+    .inner-content {
+        max-width: 900px;
+    }
+
+    .contracts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly smaller cards */
+        max-width: 900px;
+        gap: 18px;
+    }
+
+    .contract-card {
+        padding: 12px;
+    }
+
+    .contract-card h3 {
+        font-size: 1rem;
+    }
+
+    .contract-card p {
+        font-size: 0.85rem;
+        gap: 5px;
+    }
+
+    .contract-actions {
+        margin-top: 8px;
+        gap: 5px;
+    }
+
+    .contract-actions button {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .contracts-management {
+        padding: 60px;
+        width: 98%;
+        max-width: 900px;
+    }
+
+    .inner-content {
+        max-width: 700px;
+    }
+
+    .contracts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Further reduced */
+        max-width: 700px;
+        gap: 15px;
+    }
+
+    .contract-card {
+        padding: 10px;
+    }
+
+    .contract-card h3 {
+        font-size: 0.95rem;
+    }
+
+    .contract-card p {
+        font-size: 0.8rem;
+    }
+
+    .contract-actions button {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .contracts-management {
+        padding: 30px;
+        margin: 5px;
+        width: 98%;
+        max-width: 700px;
+    }
+
+    .inner-content {
+        max-width: 100%;
+        padding-top: 5px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .report-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .filter-group {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        max-width: 100%;
+    }
+
+    #addContractBtn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        transform: translateY(0);
+    }
+
+    #addContractBtn:hover {
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .contracts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr)); /* Full width on small screens */
+        gap: 12px;
+        max-width: 100%;
+    }
+
+    .contract-card {
+        padding: 10px;
+    }
+
+    .contract-card h3 {
+        font-size: 0.9rem;
+    }
+
+    .contract-card p {
+        font-size: 0.75rem;
+        gap: 4px;
+    }
+
+    .contract-actions {
+        margin-top: 6px;
+        gap: 4px;
+    }
+
+    .contract-actions button {
+        padding: 4px 8px;
+        font-size: 0.65rem;
+    }
+
+    .modal {
+        padding: 10px;
+    }
+
+    .modal-content {
+        padding: 20px;
+        max-width: 90%;
+        max-height: 90vh;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .modal-content button[type="submit"] {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contracts-management {
+        padding: 15px;
+        width: 98%;
+        max-width: 400px;
+    }
+
+    .inner-content {
+        max-width: 100%;
+        padding-top: 3px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    #addContractBtn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .contracts-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .contract-card {
+        padding: 8px;
+    }
+
+    .contract-card h3 {
+        font-size: 0.85rem;
+    }
+
+    .contract-card p {
+        font-size: 0.7rem;
+        gap: 3px;
+    }
+
+    .contract-actions {
+        margin-top: 5px;
+        gap: 3px;
+    }
+
+    .contract-actions button {
+        padding: 3px 6px;
+        font-size: 0.6rem;
+    }
+
+    .modal-content {
+        padding: 15px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.2rem;
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .modal-content button[type="submit"] {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+footer {
+    margin-top: auto;
+    padding: 10px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Оптимізація Завдань та Календар Використання - AgroFleet">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; connect-src 'self' http://localhost:3000 ws://localhost:3000; img-src 'self' data:;">
+    <title>Оптимізація Завдань та Календар - AgroFleet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="/public/planning_optimization.css">
+    <link rel="stylesheet" href="/components/navigation.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="/public/fonts.js" type="module"></script>
+</head>
+<body class="light-theme">
+    <div id="navigation-container"></div>
+
+    <main class="fade-in">
+        <!-- Status Section -->
+        <section class="status-section">
+            <h1><i class="fas fa-tasks"></i> Оптимізація Завдань та Календар</h1>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span>Заплановані</span>
+                    <span id="planned-count">0</span>
+                </div>
+                <div class="status-item">
+                    <span>В процесі</span>
+                    <span id="in-progress-count">0</span>
+                </div>
+                <div class="status-item">
+                    <span>Виконані</span>
+                    <span id="completed-count">0</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            <div class="view-toggle">
+                <button id="kanban-btn" class="active"><i class="fas fa-th"></i> Канбан</button>
+                <button id="list-btn"><i class="fas fa-list"></i> Список</button>
+                <button id="calendar-btn"><i class="fas fa-calendar-alt"></i> Календар</button>
+                <button id="optimize-btn"><i class="fas fa-cogs"></i> Оптимізувати</button>
+            </div>
+        </section>
+
+        <!-- Add Task Section -->
+        <section class="card add-task-section fade-in">
+            <div class="log-header">
+                <h2><i class="fas fa-plus-circle"></i> Додати Завдання</h2>
+                <button id="open-add-modal" class="primary-btn"><i class="fas fa-plus"></i> Додати Завдання</button>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filter-bar fade-in">
+            <div class="filter-group">
+                <label for="taskTypeFilter">Тип завдання:</label>
+                <select id="taskTypeFilter">
+                    <option value="">Усі типи</option>
+                    <option value="technical_inspection">Техогляд</option>
+                    <option value="repair">Ремонт</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="equipmentFilter">Обладнання:</label>
+                <select id="equipmentFilter">
+                    <option value="">Усе обладнання</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="operatorFilter">Оператор:</label>
+                <select id="operatorFilter">
+                    <option value="">Усі оператори</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="dueDateFilter">Дата:</label>
+                <input type="text" id="dueDateFilter" placeholder="Оберіть дату">
+            </div>
+            <div class="filter-group">
+                <label for="statusFilter">Статус:</label>
+                <select id="statusFilter">
+                    <option value="">Усі</option>
+                    <option value="planned">Заплановано</option>
+                    <option value="in_progress">В процесі</option>
+                    <option value="completed">Завершено</option>
+                </select>
+            </div>
+            <button class="export-btn"><i class="fas fa-download"></i> Експорт до Excel</button>
+        </section>
+
+        <!-- Kanban Board -->
+        <section class="kanban-board fade-in" id="kanban-board">
+            <div class="kanban-column" data-status="planned">
+                <h3>Заплановані</h3>
+                <div class="kanban-tasks" id="planned-tasks"></div>
+            </div>
+            <div class="kanban-column" data-status="in_progress">
+                <h3>В процесі</h3>
+                <div class="kanban-tasks" id="in-progress-tasks"></div>
+            </div>
+            <div class="kanban-column" data-status="completed">
+                <h3>Виконані</h3>
+                <div class="kanban-tasks" id="completed-tasks"></div>
+            </div>
+        </section>
+
+        <!-- List View -->
+        <section class="list-view fade-in" id="list-view" style="display: none;">
+            <div class="table-container">
+                <table id="taskTable">
+                    <thead>
+                        <tr>
+                            <th>Назва</th>
+                            <th>Тип завдання</th>
+                            <th>Пріоритет</th>
+                            <th>Дата виконання</th>
+                            <th>Обладнання</th>
+                            <th>Оператор</th>
+                            <th>Час до виконання</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Calendar View -->
+        <section class="calendar-view fade-in" id="calendar-view" style="display: none;">
+            <div id="calendar-header">
+                <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                <h3 id="calendar-title">Квітень 2025 р.</h3>
+                <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="calendar-mode">
+                <button id="month-view" class="active">Місяць</button>
+                <button id="week-view">Тиждень</button>
+                <button id="day-view">День</button>
+            </div>
+            <div id="calendar"></div>
+        </section>
+    </main>
+
+    <!-- Add Task Modal -->
+    <div id="addTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">×</span>
+            <h2><i class="fas fa-plus-circle"></i> Додати Завдання</h2>
+            <form id="addTaskForm" class="task-form" action="#">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="taskName">Назва:</label>
+                        <input type="text" id="taskName" placeholder="Введіть назву" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskType">Тип завдання:</label>
+                        <select id="taskType" required>
+                            <option value="" disabled selected>Оберіть тип</option>
+                            <option value="technical_inspection">Техогляд</option>
+                            <option value="repair">Ремонт</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Дата виконання:</label>
+                        <input type="text" id="dueDate" placeholder="Оберіть дату" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Пріоритет:</label>
+                        <select id="priority" required>
+                            <option value="1">Високий</option>
+                            <option value="2">Середній</option>
+                            <option value="3">Низький</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="equipmentSelect">Обладнання:</label>
+                        <select id="equipmentSelect">
+                            <option value="">Оберіть обладнання</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="operatorSelect">Оператор:</label>
+                        <select id="operatorSelect">
+                            <option value="">Оберіть оператора</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="dependencies">Залежності:</label>
+                        <select id="dependencies" multiple>
+                            <option value="">Немає залежностей</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn"><i class="fas fa-plus"></i> Додати</button>
+                    <button type="button" class="secondary-btn close-modal-btn"><i class="fas fa-times"></i> Скасувати</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Area -->
+    <div id="notification-area"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
+    <script type="module">
+        import { initNavigation } from '/components/navigation.js';
+
+        async function checkAuth() {
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/check-auth', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    throw new Error('Не авторизовано');
+                }
+                const data = await response.json();
+                return data.id || null;
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                return null;
+            }
+        }
+
+        async function initializePage() {
+            const userId = await checkAuth();
+            if (!userId) {
+                window.location.href = '/profile.html?authRequired=true';
+                return;
+            }
+
+            await initNavigation();
+
+            const fadeInElements = document.querySelectorAll('.fade-in');
+            fadeInElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('loaded');
+                }, index * 200);
+            });
+
+            flatpickr("#dueDate", {
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                locale: "uk"
+            });
+
+            flatpickr("#dueDateFilter", {
+                dateFormat: "Y-m-d",
+                locale: "uk"
+            });
+        }
+
+        initializePage();
+    </script>
+    <script src="/public/planning_optimization.js" type="module" defer></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'931a0bde7817674e',t:'MTc0NDg3MzIzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

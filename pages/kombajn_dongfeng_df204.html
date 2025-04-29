@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Комбайн CAT LEXION 470R - AgroFleet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/pages/modal.css">
+    <link rel="stylesheet" href="/components/navigation.css">
+</head>
+<body>
+    <!-- Контейнер для навігації -->
+    <div id="navigation-container"></div>
+
+    <main>
+        <section class="product-details">
+            <div class="product-container" data-equipment-id="2" data-name="Комбайн CAT LEXION 470R">
+                <div class="image-section">
+                    <img id="main-image" class="main" src="../images/combine-cat-lexion-470r.jpg" alt="Комбайн CAT LEXION 470R">
+                    <div class="gallery">
+                        <img src="../images/combine-cat-lexion-470r.jpg" alt="Комбайн CAT LEXION 470R">
+                        <img src="../images/photo_9_2024-10-06_21-40-19-600x600.jpg" alt="Комбайн CAT LEXION 470R">
+                        <img src="../images/photo_12_2024-10-06_21-40-19-600x600.jpg" alt="Комбайн CAT LEXION 470R">
+                        <img src="../images/photo_7_2024-10-06_21-40-19-600x600.jpg" alt="Комбайн CAT LEXION 470R">
+                    </div>
+                </div>
+                <div class="details-section">
+                    <div class="characteristics-block">
+                        <h2><i class="fas fa-cogs"></i> Характеристики:</h2>
+                        <ul id="characteristics-list">
+                            <li><strong>Двигун:</strong> 6-циліндровий, дизельний, потужністю 200 к.с.</li>
+                            <li><strong>Тип охолодження:</strong> Водяне рідинне охолодження</li>
+                            <li><strong>Трансмісія:</strong> Механічна, 4 передачі вперед та 1 назад</li>
+                            <li><strong>Привід:</strong> Повний (4x4)</li>
+                            <li><strong>Гідравлічна система:</strong> Є, з можливістю підключення навісного обладнання</li>
+                            <li><strong>Колісна база:</strong> 2750 мм</li>
+                            <li><strong>Вага:</strong> 10500 кг</li>
+                            <li><strong>Максимальна швидкість:</strong> до 25 км/год</li>
+                            <li><strong>Паливний бак:</strong> 275 літрів</li>
+                            <li><strong>Колеса:</strong> Передні 500/60 R22.5, задні 600/65 R28</li>
+                            <li><strong>Кабіна:</strong> Є, з захистом від пилу, кондиціонером та системою управління</li>
+                            <li><strong>Гальмівна система:</strong> Дискові гальма в масляній ванні</li>
+                            <li><strong>Додаткове обладнання:</strong> Можливість встановлення різних насадок для збирання врожаю</li>
+                            <li><strong>Тип рами:</strong> Посилена рама для важких умов роботи</li>
+                            <li><strong>Охолоджувач:</strong> Наявність охолоджувача повітря для роботи в жарких умовах</li>
+                            <li><strong>Витрата пального:</strong> 12-15 л/година при максимальному навантаженні</li>
+                            <li><strong>Обороти двигуна:</strong> 2200 об/хв</li>
+                            <li><strong>Об'єм двигуна:</strong> 6.6 літра</li>
+                            <li><strong>Ширина захоплення:</strong> 4.2 метра (залежно від насадки)</li>
+                            <li><strong>Ємність бункера:</strong> 6000 літрів</li>
+                            <li><strong>Тип пального:</strong> Дизельне паливо</li>
+                            <li><strong>Електрична система:</strong> 24V, стартер</li>
+                            <li><strong>Кут повороту:</strong> до 30 градусів</li>
+                            <li><strong>Кількість фрез:</strong> Залежно від насадки (зазвичай 6-8 дискових фрез)</li>
+                            <li><strong>Габарити:</strong> 10400 x 3000 x 4000 мм</li>
+                        </ul>
+                        <button id="toggle-characteristics" class="toggle-button">Показати всі характеристики</button>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="product-info">
+                        <h3><i class="fas fa-info-circle"></i> Про товар:</h3>
+                        <p>Якщо ви шукаєте надійний і потужний зернозбиральний комбайн, зверніть увагу на модель CAT LEXION 470. Цей комбайн є оптимальним вибором для аграріїв, які прагнуть отримати максимальну ефективність збору врожаю. Модель 2000 року оснащена перевіреним двигуном від Caterpillar, що забезпечує стабільну роботу та економічне споживання палива.</p>
+                        <p><strong>Вартість оренди:</strong> 2000 UAH за день</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="notification" class="notification"></div>
+
+    <!-- Підключаємо скрипти -->
+    <script type="module">
+        import { initNavigation } from '/components/navigation.js';
+
+        // Ініціалізація навігації
+        async function initializePage() {
+            try {
+                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html'; // Перенаправляємо на сторінку входу
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+                // Ініціалізуємо навігацію після успішної перевірки
+                initNavigation();
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                window.location.href = '/profile.html'; // Перенаправляємо у разі помилки
+            }
+        }
+
+        // Викликаємо ініціалізацію
+        initializePage();
+    </script>
+    <script src="/pages/modal.js" defer></script>
+</body>
+</html>

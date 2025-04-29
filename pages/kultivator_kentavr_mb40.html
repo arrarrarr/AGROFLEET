@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Культиватор Kentavr MB40 - AgroFleet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/pages/modal.css">
+    <link rel="stylesheet" href="/components/navigation.css">
+</head>
+<body>
+    <!-- Контейнер для навігації -->
+    <div id="navigation-container"></div>
+
+    <main>
+        <section class="product-details">
+            <div class="product-container" data-equipment-id="3" data-name="Культиватор Kentavr MB40">
+                <div class="image-section">
+                    <img id="main-image" class="main" src="../images/5490141959_w640_h640_motoblok-kentavr-mv40-1sg.jpg" alt="Культиватор Kentavr MB40">
+                    <div class="gallery">
+                        <img src="../images/cultivator-kentavr-mb40-1c6.jpg" alt="Культиватор Kentavr MB40">
+                        <img src="../images/5490141967_w640_h640_5490141967.jpg" alt="Культиватор Kentavr MB40">
+                        <img src="../images/5490141965_w640_h640_5490141965.jpg" alt="Культиватор Kentavr MB40">
+                        <img src="../images/5490141960_w640_h640_5490141960.jpg" alt="Культиватор Kentavr MB40">
+                    </div>
+                </div>
+                <div class="details-section">
+                    <div class="characteristics-block">
+                        <h2><i class="fas fa-cogs"></i> Характеристики:</h2>
+                        <ul id="characteristics-list">
+                            <li><strong>Тип двигуна:</strong> 4-тактний, бензиновий</li>
+                            <li><strong>Потужність:</strong> 6.5 к.с.</li>
+                            <li><strong>Ширина обробітку:</strong> 85 см</li>
+                            <li><strong>Глибина обробітку:</strong> до 30 см</li>
+                            <li><strong>Трансмісія:</strong> Механічна, 1 передача вперед і 1 назад</li>
+                            <li><strong>Вага:</strong> 55 кг</li>
+                            <li><strong>Тип коліс:</strong> Напівпрофільні</li>
+                            <li><strong>Обладнання:</strong> Дискові фрези, плуги для обробки</li>
+                            <li><strong>Задня передача:</strong> Так, за потреби</li>
+                            <li><strong>Додаткові пристрої:</strong> Можливість підключення різних насадок (борони, сійки тощо)</li>
+                            <li><strong>Транспортні колеса:</strong> Так, для зручності перевезення</li>
+                            <li><strong>Витрата пального:</strong> близько 1.4 л/година</li>
+                            <li><strong>Система охолодження:</strong> Повітряне охолодження</li>
+                            <li><strong>Запуск:</strong> Ручний стартер</li>
+                            <li><strong>Гарантія:</strong> 12 місяців</li>
+                            <li><strong>Регульована ручка:</strong> Так, з можливістю регулювання по висоті</li>
+                            <li><strong>Матеріал рами:</strong> Метал, посилена конструкція</li>
+                            <li><strong>Обороти двигуна:</strong> 3600 об/хв</li>
+                            <li><strong>Кількість фрез:</strong> 6-8 дискових фрез</li>
+                            <li><strong>Об'єм паливного бака:</strong> 3.6 літра</li>
+                            <li><strong>Габарити упаковки:</strong> 95 x 50 x 60 см</li>
+                            <li><strong>Шум:</strong> Шум на рівні 95 дБ</li>
+                        </ul>
+                        <button id="toggle-characteristics" class="toggle-button">Показати всі характеристики</button>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="product-info">
+                        <h3><i class="fas fa-info-circle"></i> Про товар:</h3>
+                        <p>Потужний та універсальний агрегат, ідеальний для виконання різноманітних сільськогосподарських завдань. Завдяки бензиновому 4-тактному двигуну потужністю 6.5 кінських сил, культиватор здатний ефективно обробляти грунт навіть в складних умовах. Його легка і маневрена конструкція забезпечує комфортну роботу в полі, а можливість підключення додаткових насадок робить його відмінним вибором для аграріїв, які потребують надійного та доступного рішення для обробки земель.</p>
+                        <p><strong>Вартість оренди:</strong> 500 UAH за день</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="notification" class="notification"></div>
+
+    <!-- Підключаємо скрипти -->
+    <script type="module">
+        import { initNavigation } from '/components/navigation.js';
+
+        // Ініціалізація навігації
+        async function initializePage() {
+            try {
+                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
+                if (!response.ok) {
+                    console.log('Не авторизований. Статус:', response.status);
+                    window.location.href = '/profile.html'; // Перенаправляємо на сторінку входу
+                    return;
+                }
+                const user = await response.json();
+                console.log('Користувач авторизований:', user);
+                // Ініціалізуємо навігацію після успішної перевірки
+                initNavigation();
+            } catch (error) {
+                console.error('Помилка перевірки авторизації:', error.message);
+                window.location.href = '/profile.html'; // Перенаправляємо у разі помилки
+            }
+        }
+
+        // Викликаємо ініціалізацію
+        initializePage();
+    </script>
+    <script src="/pages/modal.js" defer></script>
+</body>
+</html>

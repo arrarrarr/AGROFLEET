@@ -1,0 +1,719 @@
+:root {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --secondary: #3b82f6;
+    --secondary-dark: #1d4ed8;
+    --background: #f8fafc;
+    --text: #1f2a44;
+    --border: #e2e8f0;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+main {
+    max-width: 1280px;
+    margin: 80px auto 20px;
+    padding: 20px;
+    min-height: calc(100vh - 120px);
+}
+
+.status-section {
+    margin-bottom: 24px;
+}
+
+.status-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-bar:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.status-item {
+    flex: 1;
+    text-align: center;
+    min-width: 120px;
+}
+
+.status-item span:first-child {
+    display: block;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.status-item span:last-child {
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 16px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    transition: width 0.5s ease-in-out;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.view-toggle button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: var(--border);
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-toggle button.active {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: var(--shadow);
+}
+
+.view-toggle button:hover {
+    background: var(--primary-dark);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.log-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.primary-btn {
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.primary-btn:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.filter-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    background: var(--card-bg);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 160px;
+}
+
+.filter-group label {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text);
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    outline: none;
+}
+
+.export-btn {
+    background: var(--secondary);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.export-btn:hover {
+    background: var(--secondary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.kanban-board {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.kanban-column {
+    flex: 1;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease;
+    min-width: 280px;
+}
+
+.kanban-column:hover {
+    transform: translateY(-2px);
+}
+
+.kanban-column h3 {
+    margin-bottom: 16px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 8px;
+}
+
+.kanban-tasks {
+    min-height: 100px;
+}
+
+.kanban-task {
+    background: var(--card-bg);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    cursor: move;
+    border-left: 4px solid var(--primary);
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.kanban-task:hover {
+    background: #f1f5f9;
+    transform: translateX(4px);
+    box-shadow: var(--shadow);
+}
+
+.kanban-task h4 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.kanban-task p {
+    margin: 4px 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+    transform: scale(1.1);
+}
+
+.list-view .table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    background: #f1f5f9;
+    font-weight: 600;
+    color: var(--text);
+}
+
+td {
+    color: #6b7280;
+}
+
+.calendar-view {
+    background: var(--card-bg);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+#calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#calendar-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.calendar-mode {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.calendar-mode button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: var(--border);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.calendar-mode button.active {
+    background: var(--primary);
+    color: #fff;
+}
+
+.calendar-mode button:hover {
+    background: var(--primary-dark);
+    color: #fff;
+}
+
+#calendar table {
+    width: 100%;
+}
+
+#calendar td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+    vertical-align: top;
+    height: 100px;
+    transition: background 0.2s ease;
+}
+
+#calendar td:hover {
+    background: #f1f5f9;
+}
+
+.calendar-tasks {
+    margin-top: 8px;
+}
+
+.calendar-tasks div {
+    background: var(--primary);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin: 4px 0;
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+}
+
+.calendar-tasks div:hover {
+    transform: scale(1.05);
+}
+
+.calendar-tasks div.moto-time {
+    background: var(--secondary);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    display: block;
+    background: var(--card-bg);
+    width: 90%;
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-hover);
+    animation: slideIn 0.3s ease;
+}
+
+.close-modal {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.close-modal:hover {
+    color: var(--text);
+}
+
+.task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.875rem;
+    color: var(--text);
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    outline: none;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.secondary-btn {
+    background: #6b7280;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+    background: #4b5563;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: #fff;
+    z-index: 1001;
+    box-shadow: var(--shadow);
+    animation: slideInRight 0.3s ease;
+}
+
+.notification.success {
+    background: var(--primary);
+}
+
+.notification.error {
+    background: #ef4444;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-in.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    main {
+        padding: 16px;
+        margin-top: 60px;
+    }
+
+    .status-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .status-item {
+        min-width: 100%;
+        margin-bottom: 12px;
+    }
+
+    .view-toggle {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .view-toggle button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .filter-group {
+        min-width: 100%;
+    }
+
+    .kanban-board {
+        flex-direction: column;
+    }
+
+    .kanban-column {
+        min-width: 100%;
+    }
+
+    .calendar-view table {
+        font-size: 0.75rem;
+    }
+
+    #calendar td {
+        height: 80px;
+        padding: 8px;
+    }
+
+    .calendar-tasks div {
+        font-size: 0.65rem;
+        padding: 3px 6px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+        padding: 16px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+
+    .notification {
+        top: 10px;
+        right: 10px;
+        padding: 10px 20px;
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+
+    .status-section h1 {
+        font-size: 1.25rem;
+    }
+
+    .status-item span:last-child {
+        font-size: 1.25rem;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .log-header h2 {
+        font-size: 1rem;
+    }
+
+    .primary-btn,
+    .export-btn,
+    .secondary-btn {
+        padding: 8px 16px;
+        font-size: 0.875rem;
+    }
+
+    table th,
+    table td {
+        padding: 8px;
+        font-size: 0.75rem;
+    }
+
+    .kanban-task {
+        padding: 12px;
+    }
+
+    .kanban-task h4 {
+        font-size: 0.875rem;
+    }
+
+    .kanban-task p {
+        font-size: 0.75rem;
+    }
+
+    .delete-btn {
+        padding: 4px;
+        top: 8px;
+        right: 8px;
+    }
+
+    #calendar-header h3 {
+        font-size: 1rem;
+    }
+
+    .calendar-mode button {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+}
