@@ -1,97 +1,224 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/public/contract_management.css">
-    <link rel="stylesheet" href="/public/analytics_usage.css">
-    <link rel="stylesheet" href="/components/navigation.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; connect-src 'self' https://agrofleet-pdqw.onrender.com/; img-src 'self' data:;"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/public/contract_management.css" />
+    <link rel="stylesheet" href="/public/analytics_usage.css" />
+    <link rel="stylesheet" href="/components/navigation.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <title>Звітність по використанню</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="navigation-container"></div>
 
     <section class="usage-report">
-        <h1><i class="fas fa-chart-line"></i> Звітність по використанню</h1>
-        <div class="report-actions">
-            <button id="addReportBtn" class="noto-sans-regular"><i class="fas fa-plus"></i> Додати звіт</button>
-        </div>
-        <div class="report-grid" id="reportGrid"></div>
+      <h1><i class="fas fa-chart-line"></i> Звітність по використанню</h1>
+      <div class="report-actions">
+        <button id="addReportBtn" class="noto-sans-regular">
+          <i class="fas fa-plus"></i> Додати звіт
+        </button>
+      </div>
+      <div class="report-grid" id="reportGrid"></div>
     </section>
 
     <div id="reportModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button noto-sans-regular" onclick="closeModal()">×</span>
-            <h2><i class="fas fa-edit"></i> <span id="modalTitle">Додати</span></h2>
-            <form id="reportForm">
-                <label for="reportName" class="noto-sans-regular">Модель техніки:</label>
-                <input type="text" id="reportName" required class="noto-sans-regular">
-                <label for="reportPeriod" class="noto-sans-regular">Період використання:</label>
-                <input type="text" id="reportPeriod" required placeholder="Напр., 01.02.2025 - 10.02.2025" class="noto-sans-regular">
-                <label for="reportHours" class="noto-sans-regular">Години роботи:</label>
-                <input type="number" id="reportHours" required class="noto-sans-regular">
-                <label for="reportFuel" class="noto-sans-regular">Витрати пального:</label>
-                <input type="text" id="reportFuel" required placeholder="Напр., 120 л" class="noto-sans-regular">
-                <label for="reportStatus" class="noto-sans-regular">Стан:</label>
-                <select id="reportStatus" required class="noto-sans-regular">
-                    <option value="Справний">Справний</option>
-                    <option value="На ТО">На ТО</option>
-                    <option value="Пошкоджений">Пошкоджений</option>
-                </select>
-                <label for="reportDateModal" class="noto-sans-regular">Дата звіту:</label>
-                <input type="text" id="reportDateModal" name="reportDateModal" readonly class="noto-sans-regular">
-                <button type="submit" class="noto-sans-regular"><i class="fas fa-save"></i> Зберегти</button>
-            </form>
-        </div>
+      <div class="modal-content">
+        <span class="close-button noto-sans-regular" onclick="closeModal()"
+          >×</span
+        >
+        <h2><i class="fas fa-edit"></i> <span id="modalTitle">Додати</span></h2>
+        <form id="reportForm">
+          <label for="reportName" class="noto-sans-regular"
+            >Модель техніки:</label
+          >
+          <input
+            type="text"
+            id="reportName"
+            required
+            class="noto-sans-regular"
+          />
+          <label for="reportPeriod" class="noto-sans-regular"
+            >Період використання:</label
+          >
+          <input
+            type="text"
+            id="reportPeriod"
+            required
+            placeholder="Напр., 01.02.2025 - 10.02.2025"
+            class="noto-sans-regular"
+          />
+          <label for="reportHours" class="noto-sans-regular"
+            >Години роботи:</label
+          >
+          <input
+            type="number"
+            id="reportHours"
+            required
+            class="noto-sans-regular"
+          />
+          <label for="reportFuel" class="noto-sans-regular"
+            >Витрати пального:</label
+          >
+          <input
+            type="text"
+            id="reportFuel"
+            required
+            placeholder="Напр., 120 л"
+            class="noto-sans-regular"
+          />
+          <label for="reportStatus" class="noto-sans-regular">Стан:</label>
+          <select id="reportStatus" required class="noto-sans-regular">
+            <option value="Справний">Справний</option>
+            <option value="На ТО">На ТО</option>
+            <option value="Пошкоджений">Пошкоджений</option>
+          </select>
+          <label for="reportDateModal" class="noto-sans-regular"
+            >Дата звіту:</label
+          >
+          <input
+            type="text"
+            id="reportDateModal"
+            name="reportDateModal"
+            readonly
+            class="noto-sans-regular"
+          />
+          <button type="submit" class="noto-sans-regular">
+            <i class="fas fa-save"></i> Зберегти
+          </button>
+        </form>
+      </div>
     </div>
 
     <script type="module">
-        import { initNavigation } from '/components/navigation.js';
+      import { initNavigation } from "/components/navigation.js";
 
-        async function initializePage() {
-            try {
-                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
-                if (!response.ok) {
-                    console.log('Не авторизовано. Статус:', response.status);
-                    window.location.href = '/profile.html?authRequired=true';
-                    return;
-                }
-                const user = await response.json();
-                console.log('Користувач авторизований:', user);
-                initNavigation();
+      async function initializePage() {
+        try {
+          const response = await fetch("/api/auth/check-auth", {
+            credentials: "include",
+          });
+          if (!response.ok) {
+            console.log("Не авторизовано. Статус:", response.status);
+            window.location.href = "/profile.html?authRequired=true";
+            return;
+          }
+          const user = await response.json();
+          console.log("Користувач авторизований:", user);
+          initNavigation();
 
-                flatpickr("#reportDateModal", {
-                    dateFormat: "Y-m-d",
-                    defaultDate: new Date(),
-                    maxDate: new Date(),
-                    enableTime: false,
-                    locale: {
-                        firstDayOfWeek: 1,
-                        weekdays: {
-                            shorthand: ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-                            longhand: ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П’ятниця', 'Субота']
-                        },
-                        months: {
-                            shorthand: ['Січ', 'Лют', 'Бер', 'Квіт', 'Трав', 'Черв', 'Лип', 'Серп', 'Вер', 'Жовт', 'Лист', 'Груд'],
-                            longhand: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень']
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Помилка авторизації:', error.message);
-                window.location.href = '/profile.html?authRequired=true';
-            }
+          flatpickr("#reportDateModal", {
+            dateFormat: "Y-m-d",
+            defaultDate: new Date(),
+            maxDate: new Date(),
+            enableTime: false,
+            locale: {
+              firstDayOfWeek: 1,
+              weekdays: {
+                shorthand: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                longhand: [
+                  "Неділя",
+                  "Понеділок",
+                  "Вівторок",
+                  "Середа",
+                  "Четвер",
+                  "П’ятниця",
+                  "Субота",
+                ],
+              },
+              months: {
+                shorthand: [
+                  "Січ",
+                  "Лют",
+                  "Бер",
+                  "Квіт",
+                  "Трав",
+                  "Черв",
+                  "Лип",
+                  "Серп",
+                  "Вер",
+                  "Жовт",
+                  "Лист",
+                  "Груд",
+                ],
+                longhand: [
+                  "Січень",
+                  "Лютий",
+                  "Березень",
+                  "Квітень",
+                  "Травень",
+                  "Червень",
+                  "Липень",
+                  "Серпень",
+                  "Вересень",
+                  "Жовтень",
+                  "Листопад",
+                  "Грудень",
+                ],
+              },
+            },
+          });
+        } catch (error) {
+          console.error("Помилка авторизації:", error.message);
+          window.location.href = "/profile.html?authRequired=true";
         }
+      }
 
-        initializePage();
+      initializePage();
     </script>
     <script src="/public/fonts.js" type="module"></script>
     <script src="/public/analytics_usage.js" type="module"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'931f147cfb56bd16',t:'MTc0NDkyNjAxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'931f147cfb56bd16',t:'MTc0NDkyNjAxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
 </html>
