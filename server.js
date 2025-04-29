@@ -41,6 +41,12 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
+
+const corsOptions = {
+  origin: "https://agrofleet-pdqw.onrender.com", // Разрешить доступ только с этого домена
+  methods: ["GET", "POST", "PUT", "DELETE"], // Разрешить эти методы
+  allowedHeaders: ["Content-Type", "Authorization"], // Разрешить эти заголовки
+};
 // Создаём HTTP-сервер для интеграции с WebSocket
 const server = http.createServer(app);
 
