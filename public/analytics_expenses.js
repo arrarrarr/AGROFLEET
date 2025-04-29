@@ -58,10 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const loadExpenseTypes = async () => {
     try {
-      const response = await fetch("https://agrofleet-pdqw.onrender.com/", {
-        method: "GET",
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://agrofleet-pdqw.onrender.com/api/expense-types",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       if (!response.ok) {
         throw new Error("Не вдалося отримати типи витрат");
       }
