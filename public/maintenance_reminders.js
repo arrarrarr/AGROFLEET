@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function connectWebSocket() {
-    ws = new WebSocket("ws://https://agrofleet-pdqw.onrender.com/ws");
+    ws = new WebSocket('wss://agro-fleet-odqw.onrender.com/');
     ws.onopen = () => console.log("WebSocket підключено");
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
