@@ -223,7 +223,7 @@ app.use((req, res, next) => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; " +
       "img-src 'self' data:; " +
       "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; " +
-      "connect-src 'self' http://localhost:3000 ws://localhost:3000;"
+      "connect-src 'self' https://agrofleet-pdqw.onrender.com/ ws://https://agrofleet-pdqw.onrender.com/;"
   );
   next();
 });

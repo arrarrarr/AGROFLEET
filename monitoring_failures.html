@@ -1,137 +1,162 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/components/navigation.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; connect-src 'self' https://agrofleet-pdqw.onrender.com/; img-src 'self' data:;"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/components/navigation.css" />
     <title>Сигналізація про поломки</title>
     <style>
-        body {
-            font-family: 'Noto Sans', sans-serif;
-            background: linear-gradient(135deg, #ece9e6, #ffffff);
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+      body {
+        font-family: "Noto Sans", sans-serif;
+        background: linear-gradient(135deg, #ece9e6, #ffffff);
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
 
-        .alerts-section {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+      .alerts-section {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
 
+      .alerts-section h1 {
+        color: #d32f2f;
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .alerts-section h1 i {
+        margin-right: 10px;
+      }
+
+      .alerts-content h2 {
+        color: #2e7d32;
+        font-size: 1.8em;
+        margin: 20px 0;
+        border-left: 5px solid #2e7d32;
+        padding-left: 15px;
+      }
+
+      .alert-block,
+      #alert-notification {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 25px;
+        margin: 20px 0;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .alert-block:hover,
+      #alert-notification:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      .alert-block p,
+      #alert-notification p {
+        margin: 10px 0;
+        text-align: center;
+        font-size: 1.1em;
+        line-height: 1.6;
+      }
+
+      #alert-notification {
+        background: linear-gradient(to right, #fff3cd, #ffecb3);
+        color: #856404;
+      }
+
+      #alert-notification strong {
+        font-weight: 700;
+        color: #6d4c41;
+      }
+
+      @media (max-width: 768px) {
         .alerts-section h1 {
-            color: #d32f2f;
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .alerts-section h1 i {
-            margin-right: 10px;
+          font-size: 2em;
         }
 
         .alerts-content h2 {
-            color: #2e7d32;
-            font-size: 1.8em;
-            margin: 20px 0;
-            border-left: 5px solid #2e7d32;
-            padding-left: 15px;
+          font-size: 1.5em;
         }
 
-        .alert-block, #alert-notification {
-            background: #ffffff;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .alert-block:hover, #alert-notification:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        .alert-block p, #alert-notification p {
-            margin: 10px 0;
-            text-align: center;
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-
+        .alert-block,
         #alert-notification {
-            background: linear-gradient(to right, #fff3cd, #ffecb3);
-            color: #856404;
+          padding: 15px;
         }
-
-        #alert-notification strong {
-            font-weight: 700;
-            color: #6d4c41;
-        }
-
-        @media (max-width: 768px) {
-            .alerts-section h1 {
-                font-size: 2em;
-            }
-
-            .alerts-content h2 {
-                font-size: 1.5em;
-            }
-
-            .alert-block, #alert-notification {
-                padding: 15px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="navigation-container"></div>
 
     <section class="alerts-section">
-        <h1><i class="fas fa-exclamation-triangle"></i> Сигналізація про поломки</h1>
-        <div class="alerts-content">
-            <h2>Активні поломки</h2>
-            <div class="alert-block">
-                <p>Наразі в системі немає активних поломок. Техніка працює стабільно.</p>
-            </div>
+      <h1>
+        <i class="fas fa-exclamation-triangle"></i> Сигналізація про поломки
+      </h1>
+      <div class="alerts-content">
+        <h2>Активні поломки</h2>
+        <div class="alert-block">
+          <p>
+            Наразі в системі немає активних поломок. Техніка працює стабільно.
+          </p>
         </div>
-        <div class="alerts-content">
-            <h2>Майбутні оновлення</h2>
-            <div id="alert-notification">
-                <p><strong>Зверніть увагу!</strong> Система GPS-моніторингу та автоматичної діагностики буде додана незабаром.</p>
-                <p>Після інтеграції ви зможете отримувати повідомлення про поломки в реальному часі.</p>
-                <p>Очікуйте оновлення найближчим часом!</p>
-            </div>
+      </div>
+      <div class="alerts-content">
+        <h2>Майбутні оновлення</h2>
+        <div id="alert-notification">
+          <p>
+            <strong>Зверніть увагу!</strong> Система GPS-моніторингу та
+            автоматичної діагностики буде додана незабаром.
+          </p>
+          <p>
+            Після інтеграції ви зможете отримувати повідомлення про поломки в
+            реальному часі.
+          </p>
+          <p>Очікуйте оновлення найближчим часом!</p>
         </div>
+      </div>
     </section>
 
     <script type="module">
-        import { initNavigation } from '/components/navigation.js';
+      import { initNavigation } from "/components/navigation.js";
 
-        async function initializePage() {
-            try {
-                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
-                if (!response.ok) {
-                    console.log('Не авторизовано. Статус:', response.status);
-                    window.location.href = '/profile.html?authRequired=true';
-                    return;
-                }
-                const user = await response.json();
-                console.log('Користувач авторизований:', user);
-                initNavigation();
-            } catch (error) {
-                console.error('Помилка авторизації:', error.message);
-                window.location.href = '/profile.html?authRequired=true';
-            }
+      async function initializePage() {
+        try {
+          const response = await fetch("/api/auth/check-auth", {
+            credentials: "include",
+          });
+          if (!response.ok) {
+            console.log("Не авторизовано. Статус:", response.status);
+            window.location.href = "/profile.html?authRequired=true";
+            return;
+          }
+          const user = await response.json();
+          console.log("Користувач авторизований:", user);
+          initNavigation();
+        } catch (error) {
+          console.error("Помилка авторизації:", error.message);
+          window.location.href = "/profile.html?authRequired=true";
         }
+      }
 
-        initializePage();
+      initializePage();
     </script>
     <script src="/public/fonts.js" type="module"></script>
-</body>
+  </body>
 </html>
