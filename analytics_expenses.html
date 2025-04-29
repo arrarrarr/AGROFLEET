@@ -1,173 +1,252 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Аналітика витрат - AgroFleet</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../components/navigation.css">
-    <link rel="stylesheet" href="./public/analytics_expenses.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../components/navigation.css" />
+    <link rel="stylesheet" href="./public/analytics_expenses.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #f0f4f8;
-            display: flex;
-            flex-direction: column;
-        }
-        .flatpickr-input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .expense-grid {
-            display: grid;
-            gap: 20px;
-            padding: 20px;
-        }
-        .expense-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .expense-card button {
-            margin-left: 10px;
-        }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #f0f4f8;
+        display: flex;
+        flex-direction: column;
+      }
+      .flatpickr-input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="navigation-container"></div>
 
     <main>
-        <section class="expense-report">
-            <div class="metric">
-                <h2 id="metric-title"><i class="fas fa-wallet"></i> Загальні витрати</h2>
-                <p id="total-expenses">0 UAH</p>
-            </div>
-            <div class="report-actions">
-                <button class="add-expense-btn" id="addExpenseBtn"><i class="fas fa-plus"></i> Додати витрату</button>
-                <div class="filters-container">
-                    <select id="filterType" class="filter-select">
-                        <option value="">Усі витрати</option>
-                    </select>
-                    <select id="exportPeriod" class="filter-select">
-                        <option value="all">Усі витрати</option>
-                        <option value="day">День</option>
-                        <option value="week">Тиждень</option>
-                        <option value="month">Місяць</option>
-                        <option value="halfyear">Півроку</option>
-                        <option value="year">Рік</option>
-                        <option value="custom">Власний період</option>
-                    </select>
-                    <input type="text" id="dayPicker" class="date-range" style="display: none;" placeholder="Оберіть день">
-                    <input type="text" id="weekPicker" class="week-picker" style="display: none;" placeholder="Оберіть тиждень">
-                    <input type="text" id="monthPicker" class="month-picker" style="display: none;" placeholder="Оберіть місяць">
-                    <select id="halfyearPicker" class="halfyear-picker" style="display: none;"></select>
-                    <select id="yearPicker" class="year-picker" style="display: none;"></select>
-                    <input type="text" id="startDate" class="date-range" style="display: none;" placeholder="Початкова дата">
-                    <input type="text" id="endDate" class="date-range" style="display: none;" placeholder="Кінцева дата">
-                </div>
-                <button class="export-btn" id="exportBtn"><i class="fas fa-file-excel"></i> Експорт у Excel</button>
-            </div>
-            <div class="expense-grid" id="expense-grid">
-                <p>Записи відсутні.</p>
-            </div>
-        </section>
+      <section class="expense-report">
+        <div class="metric">
+          <h2 id="metric-title">
+            <i class="fas fa-wallet"></i> Загальні витрати
+          </h2>
+          <p id="total-expenses">0 UAH</p>
+        </div>
+        <div class="report-actions">
+          <button class="add-expense-btn" id="addExpenseBtn">
+            <i class="fas fa-plus"></i> Додати витрату
+          </button>
+          <div class="filters-container">
+            <select id="filterType" class="filter-select">
+              <option value="">Усі витрати</option>
+            </select>
+            <select id="exportPeriod" class="filter-select">
+              <option value="all">Усі витрати</option>
+              <option value="day">День</option>
+              <option value="week">Тиждень</option>
+              <option value="month">Місяць</option>
+              <option value="halfyear">Півроку</option>
+              <option value="year">Рік</option>
+              <option value="custom">Власний період</option>
+            </select>
+            <input
+              type="text"
+              id="dayPicker"
+              class="date-range"
+              style="display: none"
+              placeholder="Оберіть день"
+            />
+            <input
+              type="text"
+              id="weekPicker"
+              class="week-picker"
+              style="display: none"
+              placeholder="Оберіть тиждень"
+            />
+            <input
+              type="text"
+              id="monthPicker"
+              class="month-picker"
+              style="display: none"
+              placeholder="Оберіть місяць"
+            />
+            <select
+              id="halfyearPicker"
+              class="halfyear-picker"
+              style="display: none"
+            ></select>
+            <select
+              id="yearPicker"
+              class="year-picker"
+              style="display: none"
+            ></select>
+            <input
+              type="text"
+              id="startDate"
+              class="date-range"
+              style="display: none"
+              placeholder="Початкова дата"
+            />
+            <input
+              type="text"
+              id="endDate"
+              class="date-range"
+              style="display: none"
+              placeholder="Кінцева дата"
+            />
+          </div>
+          <button class="export-btn" id="exportBtn">
+            <i class="fas fa-file-excel"></i> Експорт у Excel
+          </button>
+        </div>
+        <div class="expense-grid" id="expense-grid"></div>
+      </section>
     </main>
 
     <div id="expenseModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">×</span>
-            <h2><i class="fas fa-edit"></i> <span id="modalTitle">Додати</span></h2>
-            <form id="expenseForm">
-                <input type="hidden" id="expenseId">
-                <label for="equipmentName"><i class="fas fa-tractor"></i> Назва техніки:</label>
-                <select id="equipmentName" required>
-                    <option value="">Виберіть техніку</option>
-                </select>
-                <label for="expenseType"><i class="fas fa-tag"></i> Тип витрат:</label>
-                <select id="expenseType" required>
-                    <option value="">Виберіть тип витрат</option>
-                </select>
-                <label for="expenseAmount"><i class="fas fa-money-bill-wave"></i> Сума витрат (UAH):</label>
-                <input type="number" id="expenseAmount" required step="0.01">
-                <label for="expenseDate"><i class="fas fa-calendar-alt"></i> Дата витрат:</label>
-                <input type="text" id="expenseDate" required placeholder="Оберіть дату">
-                <button type="submit"><i class="fas fa-save"></i> Зберегти</button>
-            </form>
-        </div>
+      <div class="modal-content">
+        <span class="close-button">×</span>
+        <h2><i class="fas fa-edit"></i> <span id="modalTitle">Додати</span></h2>
+        <form id="expenseForm">
+          <label for="equipmentName"
+            ><i class="fas fa-tractor"></i> Назва техніки:</label
+          >
+          <input type="text" id="equipmentName" required />
+          <label for="expenseType"
+            ><i class="fas fa-tag"></i> Тип витрат:</label
+          >
+          <select id="expenseType" required>
+            <option value="">Виберіть тип витрат</option>
+          </select>
+          <label for="expenseAmount"
+            ><i class="fas fa-money-bill-wave"></i> Сума витрат (UAH):</label
+          >
+          <input type="number" id="expenseAmount" required step="0.01" />
+          <label for="expenseDate"
+            ><i class="fas fa-calendar-alt"></i> Дата витрат:</label
+          >
+          <input
+            type="text"
+            id="expenseDate"
+            required
+            placeholder="Оберіть дату"
+          />
+          <button type="submit"><i class="fas fa-save"></i> Зберегти</button>
+        </form>
+      </div>
     </div>
 
     <script type="module">
-        import { initNavigation } from '../components/navigation.js';
+      import { initNavigation } from "../components/navigation.js";
 
-        async function initializePage() {
-            try {
-                const response = await fetch('/api/auth/check-auth', { credentials: 'include' });
-                if (!response.ok) {
-                    console.log('Не авторизований. Статус:', response.status);
-                    window.location.href = '/profile.html';
-                    return;
-                }
-                const user = await response.json();
-                console.log('Користувач авторизований:', user);
+      async function initializePage() {
+        try {
+          const response = await fetch("/api/auth/check-auth", {
+            credentials: "include",
+          });
+          if (!response.ok) {
+            console.log("Не авторизований. Статус:", response.status);
+            window.location.href = "/profile.html";
+            return;
+          }
+          const user = await response.json();
+          console.log("Користувач авторизований:", user);
 
-                initNavigation();
-            } catch (error) {
-                console.error('Помилка перевірки авторизації:', error.message);
-                window.location.href = '/profile.html';
-            }
+          initNavigation();
+        } catch (error) {
+          console.error("Помилка перевірки авторизації:", error.message);
+          window.location.href = "/profile.html";
         }
+      }
 
-        initializePage();
+      initializePage();
 
-        flatpickr("#expenseDate", {
-            locale: "uk",
-            dateFormat: "Y-m-d",
-            defaultDate: new Date()
-        });
+      flatpickr("#expenseDate", {
+        locale: "uk",
+        dateFormat: "Y-m-d",
+        defaultDate: new Date(),
+      });
 
-        flatpickr("#dayPicker", {
-            locale: "uk",
-            dateFormat: "Y-m-d"
-        });
+      flatpickr("#dayPicker", {
+        locale: "uk",
+        dateFormat: "Y-m-d",
+      });
 
-        flatpickr("#weekPicker", {
-            locale: "uk",
-            plugins: [new weekSelect()],
-            dateFormat: "Y-\\W-W"
-        });
+      flatpickr("#weekPicker", {
+        locale: "uk",
+        plugins: [new weekSelect()],
+        dateFormat: "Y-\\W-W",
+      });
 
-        flatpickr("#monthPicker", {
-            locale: "uk",
-            plugins: [new monthSelectPlugin()],
-            dateFormat: "Y-m"
-        });
+      flatpickr("#monthPicker", {
+        locale: "uk",
+        plugins: [new monthSelectPlugin()],
+        dateFormat: "Y-m",
+      });
 
-        flatpickr("#startDate", {
-            locale: "uk",
-            dateFormat: "Y-m-d"
-        });
+      flatpickr("#startDate", {
+        locale: "uk",
+        dateFormat: "Y-m-d",
+      });
 
-        flatpickr("#endDate", {
-            locale: "uk",
-            dateFormat: "Y-m-d"
-        });
+      flatpickr("#endDate", {
+        locale: "uk",
+        dateFormat: "Y-m-d",
+      });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/weekSelect/weekSelect.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
     <script src="./public/analytics_expenses.js" type="module"></script>
-</body>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'93654526d81c139d',t:'MTc0NTY2MjAxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
 </html>
