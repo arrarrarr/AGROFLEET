@@ -40,8 +40,7 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 3000;
 
-app.cors();
-
+app.use(cors());
 // Создаём HTTP-сервер для интеграции с WebSocket
 const server = http.createServer(app);
 
