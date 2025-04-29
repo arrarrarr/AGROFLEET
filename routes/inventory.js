@@ -176,22 +176,30 @@ router.get("/", checkPermissions, async (req, res) => {
 // POST /api/inventory - Створення нового запаса
 router.post("/", checkPermissions, async (req, res) => {
   try {
-    // Перевірка обов'язкових полів
-    if (
-      !item.name ||
-      !item.quantity ||
-      !item.responsible ||
-      !item.update_date
-    ) {
+    if (req.userRole !== "admin" && req.userRole !== "manager") {
       return res
-        .status(400)
-        .json({ error: "Всі обов'язкові поля мають бути заповнені" });
+        .status(403)
+        .json({ error: "Недостатньо прав для створення запаса" });
     }
 
-    // Створюємо витрату
+    const item = {
+      name: req.body.name,
+      quantity: parseInt(req.body.quantity),
+      min_level: SPARE_PARTS[req.body.name]?.minLevel,
+      responsible: req.body.responsible,
+      update_date: req.body.update_date,
+      notes: req.body.notes || "",
+    };
+
+    const errors = validateInventory(item);
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
+    }
+
+    // Создаем запись в expenses
     await createExpenseFromInventory(req.db, item, req.currentUserId);
 
-    // Перевіряємо існуючий товар
+    // Создаем или обновляем запись в inventory
     const existingItem = await req.db.get(
       "SELECT * FROM inventory WHERE name = ? AND user_id = ?",
       [item.name, req.currentUserId]
@@ -200,13 +208,6 @@ router.post("/", checkPermissions, async (req, res) => {
     let newItem;
     if (existingItem) {
       const newQuantity = existingItem.quantity + item.quantity;
-
-      if (newQuantity < 0) {
-        return res
-          .status(400)
-          .json({ error: "Кількість не може бути від'ємною" });
-      }
-
       await req.db.run(
         `UPDATE inventory SET quantity = ?, responsible = ?, update_date = ?, notes = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
         [
@@ -238,18 +239,8 @@ router.post("/", checkPermissions, async (req, res) => {
       ]);
     }
 
-    // Перевірка наявності ціни
-    if (SPARE_PARTS[newItem.name]) {
-      newItem.pricePerUnit = SPARE_PARTS[newItem.name].price;
-    } else {
-      console.warn(
-        `Ціна для запасу ${newItem.name} не знайдена в SPARE_PARTS.`
-      );
-      newItem.pricePerUnit = 0;
-    }
-
-    // Створюємо повідомлення про низький рівень запасу
     await createLowStockNotification(req.db, newItem, req.currentUserId);
+    newItem.pricePerUnit = SPARE_PARTS[newItem.name].price;
 
     res.status(201).json(newItem);
   } catch (err) {
@@ -482,14 +473,8 @@ router.post("/expenses", checkPermissions, async (req, res) => {
       update_date: item.date,
       min_level: SPARE_PARTS[item.name]?.minLevel,
     });
-    if (
-      isNaN(item.quantity) ||
-      isNaN(item.price_per_unit) ||
-      isNaN(item.total_cost)
-    ) {
-      return res
-        .status(400)
-        .json({ error: "Невірний формат числових значень" });
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
     }
 
     const result = await req.db.run(
